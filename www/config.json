@@ -1,0 +1,13 @@
+{
+    "powerplugs": {
+	"name": "Powerplugs",
+	"site": "#powerplugs",
+	"objects": []
+    },
+
+    "heater": {
+	"name": "Heater",
+	"site": "#dummy",
+	"objects": []
+    }
+}
