@@ -7,7 +7,7 @@
 
 	$eventSource.click(function (evt) {
 	    console.debug("click event from " + (evt.target.id || evt.target.children[0].id));
-	    $(':mobile-pagecontainer').pagecontainer('change', sSite, {
+	    $.mobile.pageContainer.pagecontainer('change', sSite, {
 		transition: 'slide',
 		changeHash: true,
 		reverse: isReverse || false,
@@ -16,5 +16,15 @@
 	});
     };
 
+    sPh.addPageContainerListener = function (){
+	$.mobile.pageContainer.on( "pagecontainerchangefailed", function( event, ui ) {
+	    console.error("Coudn't change page to " + ui.toPage);
+	});
+	$.mobile.pageContainer.on( "pagecontainerchange", function( event, ui ) {
+	    console.debug("Page changed to " + ui.toPage.map(function() {return this.id;}).get());
+	});
+    };
+
     sPh.addNavigation($('[name="btnMenu"]'), '#menu', true);
+
 }(window.sPh = window.sPh || {}, jQuery));

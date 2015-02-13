@@ -29,3 +29,7 @@
     //execute this on start up
     sPh.readConfig();
 }(window.sPh = window.sPh || {}, jQuery));
+
+$(document).ready(function() {
+    sPh.addPageContainerListener();
+});
