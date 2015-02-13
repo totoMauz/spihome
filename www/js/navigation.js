@@ -24,7 +24,4 @@
 	    console.debug("Page changed to " + ui.toPage.map(function() {return this.id;}).get());
 	});
     };
-
-    sPh.addNavigation($('[name="btnMenu"]'), '#menu', true);
-
 }(window.sPh = window.sPh || {}, jQuery));
