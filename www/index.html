@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RASPI POWER</title>
+    <meta name="viewport" content="width=device-width,user-scalable=yes">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- <link rel="icon" type="image/png" href="/img/favicon.png"/> -->
+    <link rel="stylesheet" type="text/css" href="/css/mobile.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <body>
+    <div data-role="page" id="menu">
+      <div data-role="header">
+        <h1>SPi/Home</h1>
+
+      </div>
+      <div role="main" class="ui-content">
+        <button id="btnPowerplugs">Powerplugs</button>
+        <button id="btnKodi">Kodi</button>
+        <button id="btnSomething">Something</button>
+      </div>
+    </div>
+    <!-- KODI -->
+    <div data-role="page" id="kodi">
+      <div data-role="header" data-position="fixed">
+        <button class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right" name="btnMenu" id="kodiMenu">Menu</button>
+        <h1>Kodi</h1>
+      </div>
+      <div data-role="main" class="ui-content">
+	<label for="cecTvPower">Turn TV on</label>
+	<button name="cecTvPower" id="cecTvPower" data-role="button">TV on</button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $('#cecTvPower').click(function() {
+      $.post('kodi.py',
+      {id: 'cec', value: 'PowerOn'},
+      function(data, status) {
+      console.log(JSON.stringify(data));
+      });
+      });
+    </script>
+
+    <!-- POWERPLUGS -->
+    <div data-role="page" id="powerplugs">
+      <div data-role="header" data-position="fixed">
+        <button class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right" name="btnMenu" id="powerplugMenu">Menu</button>
+        <h1>Powerplugs</h1>
+
+      </div>
+      <div role="main" class="ui-content">
+        <label for="flip-1">Powerplug 1:</label>
+        <select name="flip-1" id="flip-1" data-role="slider">
+          <option value="off">Off</option>
+          <option value="on">On</option>
+        </select>
+        <label for="flip-2">Powerplug 2:</label>
+        <select name="flip-2" id="flip-2" data-role="slider">
+          <option value="off">Off</option>
+          <option value="on">On</option>
+        </select>
+      </div>
+    </div>
+    <!-- DUMMY -->
+
+    <div data-role="page" id="dummy">
+      <div data-role="header" data-position="fixed">
+        <button class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right" name="btnMenu" id="dummyMenu">Menu</button>
+        <h1>Dummy</h1>
+      </div>
+    </div>
+
+
+    <script src="/js/navigation.js"></script>
+  </body>
+</html>
