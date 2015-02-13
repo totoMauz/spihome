@@ -2,11 +2,11 @@
     sPh.addNavigation = function ($selector, sSite, isReverse) {
 	console.debug("attached click event to " + $selector.map(function() {return this.id;}).get());
 
-	//assume it's one of the generated 'buttons' - get it's parent to increase clickable area
-	var $eventSource = $selector.is("button") ? $selector : $selector.parent();
+	//if it's not a button, assume it's one of the generated ones - get it's 'div button' parent
+	var $eventSource = $selector.is("button") ? $selector : $selector.parent('.ui-btn');
 
 	$eventSource.click(function (evt) {
-	    console.debug("click event from " + evt.target.id);
+	    console.debug("click event from " + (evt.target.id || evt.target.children[0].id));
 	    $(':mobile-pagecontainer').pagecontainer('change', sSite, {
 		transition: 'slide',
 		changeHash: true,

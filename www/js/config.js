@@ -10,7 +10,6 @@
 		var oCategory = data[categoryKey];
 		sPh.createMenuButton(oCategory.name, oCategory.site);
 	    });
-	    $menu.find("span[data-role='button']").button();
 	}).fail(function() {
 	    console.error("Coudn't read config");
 	});
@@ -19,6 +18,7 @@
     sPh.createMenuButton = function(sCategory, sSite) {
 	var sId = "btn" + sCategory;
 	$menu.append('<span data-role="button" id="' + sId + '" >' + sCategory + '</span>');
+	$menu.find("span[data-role='button']").button();
 	sPh.addNavigation($('#'+sId), sSite);
     };
 
