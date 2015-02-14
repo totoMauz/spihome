@@ -11,8 +11,8 @@
 		        sPh.createMenuButton(oCategory.name, oCategory.site);
 		        sPh.createPage(oCategory);
 	        });
-	    }).fail(function() {
-	        console.error("Coudn't read config");
+	    }).fail(function(jqxhr, text, error) {
+	        console.error(String.format("Coudn't read config: {0}. {1}", text, error));
 	    }).done(function() {
 	        sPh.addNavigation($('[name="btnMenu"]'), '#menu', true);
 	    });

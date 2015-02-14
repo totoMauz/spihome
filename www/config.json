@@ -2,12 +2,19 @@
     "powerplugs": {
 	    "name": "Powerplugs",
 	    "site": "#powerplugs",
-	    "objects": []
+	    "objects": [{"name": "Powerplug 1",
+                     "description": "Living room",
+                     "template": "toggle"}]
     },
 
     "heater": {
 	    "name": "Heater",
 	    "site": "#heater",
 	    "objects": []
+    },
+
+    "kodi": {
+        "name": "Kodi",
+        "site": "#kodi"
     }
 }
