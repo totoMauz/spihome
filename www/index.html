@@ -16,51 +16,12 @@
 
       </div>
       <div role="main" class="ui-content">
-	<!-- will be inserted by config.js -->
+    <!-- Buttons will be inserted by config.js -->
       </div>
     </div>
-    <!-- KODI -->
-    <div data-role="page" id="kodi">
-      <div data-role="header" data-position="fixed">
-        <button class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right" name="btnMenu" id="kodiMenu">Menu</button>
-        <h1>Kodi</h1>
-      </div>
-      <div data-role="main" class="ui-content">
-	<label for="cecTvPower">Turn TV on</label>
-	<button name="cecTvPower" id="cecTvPower" data-role="button">TV on</button>
-      </div>
-    </div>
-    <script type="text/javascript">
-      $('#cecTvPower').click(function() {
-      $.post('kodi.py',
-      {id: 'cec', value: 'PowerOn'},
-      function(data, status) {
-      console.log(JSON.stringify(data));
-      });
-      });
-    </script>
-
-    <!-- POWERPLUGS -->
-    <div data-role="page" id="powerplugs">
-      <div data-role="header" data-position="fixed">
-        <button class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right" name="btnMenu" id="powerplugMenu">Menu</button>
-        <h1>Powerplugs</h1>
-
-      </div>
-      <div role="main" class="ui-content">
-        <label for="flip-1">Powerplug 1:</label>
-        <select name="flip-1" id="flip-1" data-role="slider">
-          <option value="off">Off</option>
-          <option value="on">On</option>
-        </select>
-        <label for="flip-2">Powerplug 2:</label>
-        <select name="flip-2" id="flip-2" data-role="slider">
-          <option value="off">Off</option>
-          <option value="on">On</option>
-        </select>
-      </div>
-    </div>
+    <!-- Pages will be inserted by config.js -->
     <script src="/js/config.js"></script>
     <script src="/js/navigation.js"></script>
+    <script src="/js/util.js"></script>
   </body>
 </html>
