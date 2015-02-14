@@ -1,20 +1,29 @@
 {
     "powerplugs": {
-	    "name": "Powerplugs",
-	    "site": "#powerplugs",
-	    "objects": [{"name": "Powerplug 1",
-                     "description": "Living room",
-                     "template": "toggle"}]
+	    "name": "powerplugs",
+        "text": "Powerplugs",
+	    "objects": [{"name": "powerplug1",
+                     "text": "AV-Receiver",
+                     "template": "toggle",
+                     "location": "Living room"},
+                    {"name": "powerplug3",
+                     "text": "Washing machine",
+                     "template": "toggle",
+                     "location": "Utility room"},
+                    {"name": "powerplug2",
+                     "text": "Subwoofer",
+                     "template": "toggle",
+                     "location": "Living room"}]
     },
 
     "heater": {
-	    "name": "Heater",
-	    "site": "#heater",
-	    "objects": []
+	    "name": "heater",
+        "text": "Heater",
+	    "objects": {}
     },
 
     "kodi": {
-        "name": "Kodi",
-        "site": "#kodi"
+        "name": "kodi",
+        "text": "Kodi"
     }
 }

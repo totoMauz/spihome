@@ -1,5 +1,5 @@
 (function(sPh, $, undefined) {
-    sPh.addNavigation = function ($selector, sSite, isReverse) {
+    sPh.addNavigation = function ($selector, sName, isReverse) {
 	    console.debug("attached click event to " + $selector.map(function() {return this.id;}).get());
 
 	    //if it's not a button, assume it's one of the generated ones - get it's 'div button' parent
@@ -7,7 +7,7 @@
 
 	    $eventSource.click(function (evt) {
 	        console.debug("click event from " + (evt.target.id || evt.target.children[0].id));
-	        $.mobile.pageContainer.pagecontainer('change', sSite, {
+	        $.mobile.pageContainer.pagecontainer('change', '#'+sName, {
 		        transition: 'slide',
 		        changeHash: true,
 		        reverse: isReverse || false,
