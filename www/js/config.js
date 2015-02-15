@@ -55,6 +55,9 @@
             case "toggle":
                 html += sPh.createToggle(obj.name, obj.text);
                 break;
+            case "button":
+                html += sPh.createButton(obj.name, obj.text);
+                break;
             }
         });
         if(currentLocation !== undefined) {
@@ -64,13 +67,17 @@
         return html;
     };
 
+    sPh.createLabel = function (sName, sText) {
+        return sText ? String.format("<label for='{0}'>{1}</label>", sName, sText) : "";
+    };
+
+    sPh.createButton = function(sName, sText) {
+        return String.format("<button name='{0}' id='{0}' data-role='button'>{1}</button>", sName, sText);
+    };
+
     sPh.createToggle = function(sName, sText) {
-        var label = "",
-            toggle;
-        if(sText) {
-            label = String.format("<label for='{0}'>{1}</label>", sName, sText);
-        }
-        toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
+        var label = sPh.createLabel(sName, sText),
+            toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
         return (label + toggle);
     };
 

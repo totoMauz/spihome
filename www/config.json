@@ -16,14 +16,17 @@
                      "location": "Living room"}]
     },
 
-    "heater": {
-	    "name": "heater",
-        "text": "Heater",
-	    "objects": {}
+    "kodi": {
+	    "name": "kodi",
+        "text": "Entertain",
+	    "objects": [{"name": "tvon",
+                     "text": "Power on TV",
+                     "template": "button",
+                     "location": "Living room"}]
     },
 
-    "kodi": {
-        "name": "kodi",
-        "text": "Kodi"
+    "heater": {
+        "name": "heater",
+        "text": "Heater"
     }
 }
