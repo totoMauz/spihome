@@ -23,11 +23,35 @@
 
         if(oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
+            console.debug("Created items for "+ oCategory.site);
         }
 
         var page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
         page.appendTo($.mobile.pageContainer);
         console.debug("Created page " + oCategory.site);
+
+
+        if(oCategory.objects) {
+            sPh.createEvents(oCategory.objects);
+            console.debug("Created events for " + oCategory.site);
+        }
+    };
+
+    sPh.createEvents = function(aObjects) {
+        if(aObjects instanceof Array === false || aObjects.length < 1) {
+            return "";
+        }
+        aObjects.forEach(function(obj) {
+            switch(obj.template) {
+            case "toggle":
+                break;
+            case "button":
+                sPh.addClickEvent(obj.name, obj.action, obj.parameter);
+                break;
+            case "slider":
+                break;
+            }
+        });
     };
 
     sPh.createItems = function (aObjects) {
@@ -53,13 +77,13 @@
 
             switch(obj.template) {
             case "toggle":
-                html += sPh.createToggle(obj.name, obj.text);
+                html += sPh.createToggle(obj.name, obj.text, obj.options);
                 break;
             case "button":
-                html += sPh.createButton(obj.name, obj.text);
+                html += sPh.createButton(obj.name, obj.text, obj.options);
                 break;
             case "slider":
-                html += sPh.createSlider(obj.name, obj.text);
+                html += sPh.createSlider(obj.name, obj.text, obj.options);
                 break;
             }
         });
