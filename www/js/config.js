@@ -2,32 +2,32 @@
     var $menu = $(".ui-content", "#menu");
 
     sPh.readConfig = function () {
-	    $.getJSON("config.json", function(data) {
-	        sPh.clearMenu();
-	        Object.keys(data).forEach(function (categoryKey) {
-		        var oCategory = data[categoryKey];
-		        sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
-		        sPh.createPage(oCategory);
-	        });
-	    }).fail(function(jqxhr, text, error) {
-	        console.error(String.format("Coudn't read config: {0}. {1}", text, error));
-	    }).done(function() {
-	        sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
-	    });
+        $.getJSON("config.json", function(data) {
+            sPh.clearMenu();
+            Object.keys(data).forEach(function (categoryKey) {
+                var oCategory = data[categoryKey];
+                sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
+                sPh.createPage(oCategory);
+            });
+        }).fail(function(jqxhr, text, error) {
+            console.error(String.format("Coudn't read config: {0}. {1}", text, error));
+        }).done(function() {
+            sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
+        });
     };
 
     sPh.createPage = function (oCategory) {
-	    var header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
+        var header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
         body = "",
-	    footer = "";
+        footer = "";
 
         if(oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
         }
 
-	    var page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
-	    page.appendTo($.mobile.pageContainer);
-	    console.debug("Created page " + oCategory.site);
+        var page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
+        page.appendTo($.mobile.pageContainer);
+        console.debug("Created page " + oCategory.site);
     };
 
     sPh.createItems = function (aObjects) {
@@ -38,7 +38,7 @@
         aObjects.sortBy("location");
 
         var html = "<div role='main' class='ui-content'>",
-            currentLocation;
+        currentLocation;
         aObjects.forEach(function(obj) {
             if(obj.location !== currentLocation) {
                 if(currentLocation !== undefined) {
@@ -58,6 +58,9 @@
             case "button":
                 html += sPh.createButton(obj.name, obj.text);
                 break;
+            case "slider":
+                html += sPh.createSlider(obj.name, obj.text);
+                break;
             }
         });
         if(currentLocation !== undefined) {
@@ -71,25 +74,45 @@
         return sText ? String.format("<label for='{0}'>{1}</label>", sName, sText) : "";
     };
 
-    sPh.createButton = function(sName, sText) {
+    sPh.createSlider = function (sName, sText, oOptions) {
+        var label = sPh.createLabel(sName, sText),
+        minValue = 0,
+        maxValue = 5,
+        step = 1,
+        currentValue = 0,
+        slider;
+
+        if(oOptions) {
+            minValue = oOptions.min || 0;
+            maxValue = oOptions.max || 5;
+            step = oOptions.step || 1;
+            currentValue =  oOptions.current || 0;
+        }
+
+        slider = String.format("<input type='range' name='{0}' id='{0}' value='{1}' min='{2}' max='{3}' />", sName, currentValue, minValue, maxValue);
+
+        return (label + slider);
+    };
+
+    sPh.createButton = function(sName, sText, oOptions) {
         return String.format("<button name='{0}' id='{0}' data-role='button'>{1}</button>", sName, sText);
     };
 
-    sPh.createToggle = function(sName, sText) {
+    sPh.createToggle = function(sName, sText, oOptions) {
         var label = sPh.createLabel(sName, sText),
-            toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
+        toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
         return (label + toggle);
     };
 
     sPh.createMenuButton = function(sName, sText) {
-	    var sId = "btn" + sName;
-	    $menu.append('<span data-role="button" id="' + sId + '" >' + sText + '</span>');
-	    $menu.find("span[data-role='button']").button();
-	    sPh.addNavigation($('#'+sId), sName);
+        var sId = "btn" + sName;
+        $menu.append('<span data-role="button" id="' + sId + '" >' + sText + '</span>');
+        $menu.find("span[data-role='button']").button();
+        sPh.addNavigation($('#'+sId), sName);
     };
 
     sPh.clearMenu = function () {
-	    $("span[data-role='button']", "#menu").remove();
+        $("span[data-role='button']", "#menu").remove();
     };
 
     //execute this on start up

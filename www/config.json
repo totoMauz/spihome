@@ -1,8 +1,8 @@
 {
     "powerplugs": {
-	    "name": "powerplugs",
+        "name": "powerplugs",
         "text": "Powerplugs",
-	    "objects": [{"name": "powerplug1",
+        "objects": [{"name": "powerplug1",
                      "text": "AV-Receiver",
                      "template": "toggle",
                      "location": "Living room"},
@@ -17,9 +17,9 @@
     },
 
     "kodi": {
-	    "name": "kodi",
+        "name": "kodi",
         "text": "Entertain",
-	    "objects": [{"name": "tvon",
+        "objects": [{"name": "tvon",
                      "text": "Power on TV",
                      "template": "button",
                      "location": "Living room"}]
@@ -27,6 +27,18 @@
 
     "heater": {
         "name": "heater",
-        "text": "Heater"
+        "text": "Heater",
+        "objects": [{"name": "heater1",
+                     "text": "Living room",
+                     "template": "slider",
+                     "location": "Living Room"},
+                    {"name": "heater2",
+                     "text": "Kitchen",
+                     "template": "slider",
+                     "location": "Kitchen"},
+                    {"name": "heater3",
+                     "text": "Bed room",
+                     "template": "slider",
+                     "location": "Bed room"}]
     }
 }
