@@ -2,39 +2,53 @@
     var $menu = $(".ui-content", "#menu");
 
     sPh.readConfig = function () {
+        var start = performance.now(),
+        end;
         $.getJSON("config.json", function(data) {
+            console.group("start up");
             sPh.clearMenu();
             Object.keys(data).forEach(function (categoryKey) {
                 var oCategory = data[categoryKey];
+                console.group(categoryKey);
                 sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
                 sPh.createPage(oCategory);
+            console.groupEnd();
             });
         }).fail(function(jqxhr, text, error) {
             console.error(String.format("Coudn't read config: {0}. {1}", text, error));
         }).done(function() {
+            console.group("Navigation");
             sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
+            console.groupEnd();
+        }).always(function() {
+            end = performance.now();
+            console.debug(String.format("Total startup time: {0} ms", (end-start)));
+            console.groupEnd();
         });
     };
 
     sPh.createPage = function (oCategory) {
-        var header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
+        var start = performance.now(),
+        end,
+        header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
         body = "",
         footer = "";
 
         if(oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
-            console.debug("Created items for "+ oCategory.site);
+            console.debug("Created items for "+ oCategory.name);
         }
 
         var page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
         page.appendTo($.mobile.pageContainer);
-        console.debug("Created page " + oCategory.site);
-
+        console.debug("Created page " + oCategory.name);
 
         if(oCategory.objects) {
             sPh.createEvents(oCategory.objects);
-            console.debug("Created events for " + oCategory.site);
+            console.debug("Created events for " + oCategory.name);
         }
+        end = performance.now();
+        console.debug(String.format("created page {1} in: {0} ms", (end - start), oCategory.name));
     };
 
     sPh.createEvents = function(aObjects) {
@@ -55,6 +69,8 @@
     };
 
     sPh.createItems = function (aObjects) {
+        var start = performance.now(),
+        end;
         if(aObjects instanceof Array === false || aObjects.length < 1) {
             return "";
         }
@@ -91,6 +107,8 @@
             html += "</div>"
         }
         html += "</div>";
+        end = performance.now();
+        console.debug(String.format("Created items in {0} ms", (end-start)));
         return html;
     };
 

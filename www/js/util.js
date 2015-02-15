@@ -9,6 +9,7 @@
                 ;
             });
         };
+        console.debug("Created String.format");
     }
 
     function dynamicSort(property) {
@@ -29,5 +30,7 @@
         value: function() {
             return this.sort(dynamicSort.apply(null, arguments));
         }
-    });
+    })
+
+    console.debug("Created Array.sortBy");;
 }(window.sPh = window.sPh || {}, jQuery));
