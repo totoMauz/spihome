@@ -131,7 +131,7 @@
             currentValue =  oOptions.current || 0;
         }
 
-        slider = String.format("<input type='range' name='{0}' id='{0}' value='{1}' min='{2}' max='{3}' />", sName, currentValue, minValue, maxValue);
+        slider = String.format("<input type='range' data-highlight='true' name='{0}' id='{0}' value='{1}' min='{2}' max='{3}' />", sName, currentValue, minValue, maxValue);
 
         return (label + slider);
     };
