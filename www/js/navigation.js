@@ -30,7 +30,9 @@
             };
             break;
         default:
-            fnAction = function() {};
+            fnAction = function(aParameter) {
+                alert(String.format("Action: {0}, Paremeter:{1}", aParameter.toString()));
+            };
             break;
         }
 
