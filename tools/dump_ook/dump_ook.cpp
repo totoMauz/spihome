@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
+#include <pthread.h>
 
 #include <cl3/gpio/io_phy_bcm2835.hpp>
 #include <cl3/gpio/io_phy_radio.hpp>
@@ -78,7 +80,16 @@ int main(int argc, char* argv[])
 	TGPIOPulseReader pulse_reader(gpio.Pins()[idx_pin], false, 0.005);	//	pass selected GPIO-PIN, normal line level, flush buffer after 5ms of silence
 	pulse_reader.Sink(&ook_demod);
 
-	usleep(10000000);
+	{
+		sigset_t ss;
+		sigfillset(&ss);
+		pthread_sigmask(SIG_BLOCK, &ss, NULL);
+
+		int sig;
+		sigwait(&ss, &sig);
+	}
+
+	fprintf(stderr, "\nbye!\n");
 
 	return 0;
 }
