@@ -1,15 +1,79 @@
 (function(sPh, $, undefined) {
     var $menu = $(".ui-content", "#menu");
 
+    sPh.validateConfig = function(oConfig) {
+        var start = performance.now(),
+        end,
+        iWarnings = 0,
+        iErrors = 0;
+
+        Object.keys(oConfig).forEach(function(sCategory) {
+            //check root categories
+            var oCategory = oConfig[sCategory],
+            categoryTags = Object.keys(oCategory),
+                sMessage;
+            categoryTags.forEach(function(sProperty) {
+                var oObjects;
+                //check for undefined tags
+                if(["name", "text", "objects"].indexOf(sProperty)=== -1) {
+                    ++iWarnings;
+                    console.warn("Unexpected property '" + sProperty + "' for category '" + sCategory + "'");
+                }
+                if(sProperty === "objects") {
+                    oObjects = oCategory[sProperty];
+                    if(oObjects instanceof Array === false) {
+                        ++iErrors;
+                        console.error("Expected objects to be of type Array");
+                    } else {
+                        oObjects.forEach(function(object, iObjIdx) {
+                            var objectTags = Object.keys(object);
+                            //check for undefined tags
+                            objectTags.forEach(function(sTag, iTagIdx) {
+                                if(["name", "text", "template", "location", "action", "parameter", "options"].indexOf(sTag) === -1) {
+                                    ++iWarnings;
+                                    console.warn("Unexpected property '" + sTag + "' for object at index [" + iTagIdx + "] of category '" + sCategory + "'");
+                                }
+                            });
+                            //check mandatory tags
+                            if(objectTags.indexOf("name") === -1) {
+                                ++iErrors;
+                                console.error("Coudn't find mandatory tag 'name' for objects at index [" + iObjIdx + "] of category '" + sCategory + "'");
+                            }
+                        });
+                    }
+                }
+            });
+            //check for mandatory tags
+            if(categoryTags.indexOf("name") === -1) {
+                ++iErrors;
+                console.error("Coudn't find mandatory tag 'name' for category '" + sCategory + "'");
+            }
+        });
+        end = performance.now();
+        console.debug(String.format("Validated config in {0} ms with {1} error(s) and {2} warnings(s)", (end-start), iErrors, iWarnings));
+
+        return iErrors === 0;
+    };
+
+
     sPh.readConfig = function () {
         var start = performance.now(),
-        end;
+        end,
+validConfig;
         $.getJSON("config.json", function(data) {
             console.group("start up");
+            validConfig = sPh.validateConfig(data);
+            if(!validConfig) {
+                return;
+            }
             sPh.clearMenu();
             Object.keys(data).forEach(function (categoryKey) {
                 var oCategory = data[categoryKey];
                 console.group(categoryKey);
+                if(!oCategory.text) {
+                    oCategory.text = oCategory.name;
+                }
+                var sText = oCategory.text || oCategory.name;
                 sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
                 sPh.createPage(oCategory);
             console.groupEnd();
