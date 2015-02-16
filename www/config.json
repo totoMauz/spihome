@@ -23,7 +23,7 @@
                      "text": "TV power on",
                      "template": "button",
                      "action": "cec",
-                     "parameter": "on 0",
+                     "parameter":["on 0"],
                      "location": "Living room"},
                     {"name": "tvoff",
                      "text": "TV standby",
@@ -34,6 +34,8 @@
                     {"name": "startKodi",
                      "text": "Start Kodi",
                      "template": "button",
+                     "action": "test",
+                     "parameter": [1,2,3,4,5,6,7],
                      "location": "Living room"}]
     },
 

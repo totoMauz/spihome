@@ -1,28 +1,108 @@
-(function(sPh, $, undefined) {
+(function (sPh, $, undefined) {
+    "use strict";
     var $menu = $(".ui-content", "#menu");
+
+    sPh.validateConfig = function (oConfig) {
+        var start = performance.now(),
+        end,
+        iWarnings = 0,
+        iErrors = 0;
+
+        function checkProperties(aExpected, sActual, bError, sCategory, iIndex) {
+            var sMessage;
+            if (aExpected.indexOf(sActual) === -1) {
+                if (bError) {
+                    ++iErrors;
+                    sMessage = "Missing mandatory property '" + sActual + "'";
+                } else {
+                    ++iWarnings;
+                    sMessage = "Unexpected property '" + sActual + "'";
+                }
+                if (iIndex !== undefined) {
+                    sMessage += " of object at [" + iIndex + "] of category '" + sCategory + "'";
+                } else {
+                    sMessage += " for category '" + sCategory + "'";
+                }
+                if (bError) {
+                    console.error(sMessage);
+                } else {
+                    console.warn(sMessage);
+                }
+            }
+        }
+
+        Object.keys(oConfig).forEach(function (sCategory) {
+            //check root categories
+            var oCategory = oConfig[sCategory],
+            categoryTags = Object.keys(oCategory);
+
+            categoryTags.forEach(function (sProperty) {
+                var oObjects;
+                //check for undefined tags
+                checkProperties(["name", "text", "objects"], sProperty, false, sCategory);
+
+                if (sProperty === "objects") {
+                    oObjects = oCategory[sProperty];
+                    if (oObjects instanceof Array === false) {
+                        ++iErrors;
+                        console.error("Expected objects to be of type Array");
+                    } else {
+                        oObjects.forEach(function (object, iObjIdx) {
+                            var objectTags = Object.keys(object);
+                            //check for undefined tags
+                            objectTags.forEach(function (sTag) {
+                                checkProperties(["name", "text", "template", "location", "action", "parameter", "options"], sTag, false, sCategory, iObjIdx);
+                            });
+                            //check mandatory tags
+                            checkProperties(objectTags, "name", true, sCategory, iObjIdx);
+                        });
+                    }
+                }
+            });
+            //check for mandatory tags
+            checkProperties(categoryTags, "name", true, sCategory);
+        });
+
+        end = performance.now();
+        console.debug(String.format("Validated config in {0} ms with {1} error(s) and {2} warnings(s)", (end - start), iErrors, iWarnings));
+
+        return iErrors === 0;
+    };
+
 
     sPh.readConfig = function () {
         var start = performance.now(),
-        end;
-        $.getJSON("config.json", function(data) {
+        end,
+        validConfig;
+        $.getJSON("config.json", function (data) {
             console.group("start up");
+            validConfig = sPh.validateConfig(data);
+            if (!validConfig) {
+                return;
+            }
             sPh.clearMenu();
             Object.keys(data).forEach(function (categoryKey) {
                 var oCategory = data[categoryKey];
                 console.group(categoryKey);
+                if (!oCategory.text) {
+                    oCategory.text = oCategory.name;
+                }
+
                 sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
                 sPh.createPage(oCategory);
-            console.groupEnd();
+                console.groupEnd();
             });
-        }).fail(function(jqxhr, text, error) {
+        }).fail(function (jqxhr, text, error) {
             console.error(String.format("Coudn't read config: {0}. {1}", text, error));
-        }).done(function() {
-            console.group("Navigation");
-            sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
-            console.groupEnd();
-        }).always(function() {
+        }).done(function () {
+            if (validConfig)  {
+                console.group("Navigation");
+                sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
+                console.groupEnd();
+            }
+        }).always(function () {
             end = performance.now();
-            console.debug(String.format("Total startup time: {0} ms", (end-start)));
+            console.debug(String.format("Total startup time: {0} ms", (end - start)));
             console.groupEnd();
         });
     };
@@ -32,18 +112,19 @@
         end,
         header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
         body = "",
-        footer = "";
+        footer = "",
+        page;
 
-        if(oCategory.objects) {
+        if (oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
-            console.debug("Created items for "+ oCategory.name);
+            console.debug("Created items for " + oCategory.name);
         }
 
-        var page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
+        page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
         page.appendTo($.mobile.pageContainer);
         console.debug("Created page " + oCategory.name);
 
-        if(oCategory.objects) {
+        if (oCategory.objects) {
             sPh.createEvents(oCategory.objects);
             console.debug("Created events for " + oCategory.name);
         }
@@ -51,12 +132,12 @@
         console.debug(String.format("created page {1} in: {0} ms", (end - start), oCategory.name));
     };
 
-    sPh.createEvents = function(aObjects) {
-        if(aObjects instanceof Array === false || aObjects.length < 1) {
+    sPh.createEvents = function (aObjects) {
+        if (aObjects instanceof Array === false || aObjects.length < 1) {
             return "";
         }
-        aObjects.forEach(function(obj) {
-            switch(obj.template) {
+        aObjects.forEach(function (obj) {
+            switch (obj.template) {
             case "toggle":
                 break;
             case "button":
@@ -70,18 +151,19 @@
 
     sPh.createItems = function (aObjects) {
         var start = performance.now(),
-        end;
-        if(aObjects instanceof Array === false || aObjects.length < 1) {
+        end,
+        html,
+        currentLocation;
+        if (aObjects instanceof Array === false || aObjects.length < 1) {
             return "";
         }
 
         aObjects.sortBy("location");
 
-        var html = "<div role='main' class='ui-content'>",
-        currentLocation;
-        aObjects.forEach(function(obj) {
-            if(obj.location !== currentLocation) {
-                if(currentLocation !== undefined) {
+        html = "<div role='main' class='ui-content'>";
+        aObjects.forEach(function (obj) {
+            if (obj.location !== currentLocation) {
+                if (currentLocation !== undefined) {
                     html += "</div>";
                 }
                 html += "<div class='ui-corner-all custom-corners'><div class='ui-bar'>";
@@ -91,7 +173,7 @@
                 currentLocation = obj.location;
             }
 
-            switch(obj.template) {
+            switch (obj.template) {
             case "toggle":
                 html += sPh.createToggle(obj.name, obj.text, obj.options);
                 break;
@@ -103,12 +185,12 @@
                 break;
             }
         });
-        if(currentLocation !== undefined) {
-            html += "</div>"
+        if (currentLocation !== undefined) {
+            html += "</div>";
         }
         html += "</div>";
         end = performance.now();
-        console.debug(String.format("Created items in {0} ms", (end-start)));
+        console.debug(String.format("Created items in {0} ms", (end - start)));
         return html;
     };
 
@@ -124,7 +206,7 @@
         currentValue = 0,
         slider;
 
-        if(oOptions) {
+        if (oOptions) {
             minValue = oOptions.min || 0;
             maxValue = oOptions.max || 5;
             step = oOptions.step || 1;
@@ -136,21 +218,21 @@
         return (label + slider);
     };
 
-    sPh.createButton = function(sName, sText, oOptions) {
+    sPh.createButton = function (sName, sText, oOptions) {
         return String.format("<button name='{0}' id='{0}' data-role='button'>{1}</button>", sName, sText);
     };
 
-    sPh.createToggle = function(sName, sText, oOptions) {
+    sPh.createToggle = function (sName, sText, oOptions) {
         var label = sPh.createLabel(sName, sText),
         toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
         return (label + toggle);
     };
 
-    sPh.createMenuButton = function(sName, sText) {
+    sPh.createMenuButton = function (sName, sText) {
         var sId = "btn" + sName;
         $menu.append('<span data-role="button" id="' + sId + '" >' + sText + '</span>');
         $menu.find("span[data-role='button']").button();
-        sPh.addNavigation($('#'+sId), sName);
+        sPh.addNavigation($('#' + sId), sName);
     };
 
     sPh.clearMenu = function () {
@@ -161,6 +243,6 @@
     sPh.readConfig();
 }(window.sPh = window.sPh || {}, jQuery));
 
-$(document).ready(function() {
+$(document).ready(function () {
     sPh.addPageContainerListener();
 });
