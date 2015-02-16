@@ -7,18 +7,39 @@
         iWarnings = 0,
         iErrors = 0;
 
+        function checkProperties(aExpected, sActual, bError, sCategory, iIndex) {
+            var sMessage;
+            if (aExpected.indexOf(sActual) === -1) {
+                if(bError) {
+                    ++iErrors;
+                    sMessage = "Missing mandatory property '" + sActual + "'";
+                } else {
+                    ++iWarnings;
+                    sMessage = "Unexpected property '" + sActual + "'";
+                }
+                if(iIndex !== undefined) {
+                    sMessage += " of object at [" + iIndex + "] of category '" + sCategory + "'";
+                } else {
+                    sMessage += " for category '" + sCategory + "'";
+                }
+                if(bError) {
+                    console.error(sMessage);
+                } else {
+                    console.warn(sMessage);
+                }
+            }
+        };
+
         Object.keys(oConfig).forEach(function(sCategory) {
             //check root categories
             var oCategory = oConfig[sCategory],
             categoryTags = Object.keys(oCategory),
-                sMessage;
+            sMessage;
             categoryTags.forEach(function(sProperty) {
                 var oObjects;
                 //check for undefined tags
-                if(["name", "text", "objects"].indexOf(sProperty)=== -1) {
-                    ++iWarnings;
-                    console.warn("Unexpected property '" + sProperty + "' for category '" + sCategory + "'");
-                }
+                checkProperties(["name", "text", "objects"], sProperty, false, sCategory);
+
                 if(sProperty === "objects") {
                     oObjects = oCategory[sProperty];
                     if(oObjects instanceof Array === false) {
@@ -28,27 +49,19 @@
                         oObjects.forEach(function(object, iObjIdx) {
                             var objectTags = Object.keys(object);
                             //check for undefined tags
-                            objectTags.forEach(function(sTag, iTagIdx) {
-                                if(["name", "text", "template", "location", "action", "parameter", "options"].indexOf(sTag) === -1) {
-                                    ++iWarnings;
-                                    console.warn("Unexpected property '" + sTag + "' for object at index [" + iTagIdx + "] of category '" + sCategory + "'");
-                                }
+                            objectTags.forEach(function(sTag) {
+                                checkProperties(["name", "text", "template", "location", "action", "parameter", "options"], sTag, false, sCategory, iObjIdx);
                             });
                             //check mandatory tags
-                            if(objectTags.indexOf("name") === -1) {
-                                ++iErrors;
-                                console.error("Coudn't find mandatory tag 'name' for objects at index [" + iObjIdx + "] of category '" + sCategory + "'");
-                            }
+                            checkProperties(objectTags, "name", true, sCategory, iObjIdx);
                         });
-                    }
+                    };
                 }
             });
             //check for mandatory tags
-            if(categoryTags.indexOf("name") === -1) {
-                ++iErrors;
-                console.error("Coudn't find mandatory tag 'name' for category '" + sCategory + "'");
-            }
+            checkProperties(categoryTags, "name", true, sCategory);
         });
+
         end = performance.now();
         console.debug(String.format("Validated config in {0} ms with {1} error(s) and {2} warnings(s)", (end-start), iErrors, iWarnings));
 
@@ -59,7 +72,7 @@
     sPh.readConfig = function () {
         var start = performance.now(),
         end,
-validConfig;
+        validConfig;
         $.getJSON("config.json", function(data) {
             console.group("start up");
             validConfig = sPh.validateConfig(data);
@@ -76,14 +89,16 @@ validConfig;
                 var sText = oCategory.text || oCategory.name;
                 sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
                 sPh.createPage(oCategory);
-            console.groupEnd();
+                console.groupEnd();
             });
         }).fail(function(jqxhr, text, error) {
             console.error(String.format("Coudn't read config: {0}. {1}", text, error));
         }).done(function() {
-            console.group("Navigation");
-            sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
-            console.groupEnd();
+            if(validConfig)  {
+                console.group("Navigation");
+                sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
+                console.groupEnd();
+            }
         }).always(function() {
             end = performance.now();
             console.debug(String.format("Total startup time: {0} ms", (end-start)));
