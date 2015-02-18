@@ -24,9 +24,9 @@
                     sMessage += " for category '" + sCategory + "'";
                 }
                 if (bError) {
-                    console.error(sMessage);
+                    sPh.error(sMessage);
                 } else {
-                    console.warn(sMessage);
+                    sPh.warn(sMessage);
                 }
             }
         }
@@ -45,7 +45,7 @@
                     oObjects = oCategory[sProperty];
                     if (oObjects instanceof Array === false) {
                         ++iErrors;
-                        console.error("Expected objects to be of type Array");
+                        sPh.error("Expected objects to be of type Array");
                     } else {
                         oObjects.forEach(function (object, iObjIdx) {
                             var objectTags = Object.keys(object);
@@ -64,7 +64,7 @@
         });
 
         end = performance.now();
-        console.debug(String.format("Validated config in {0} ms with {1} error(s) and {2} warnings(s)", (end - start), iErrors, iWarnings));
+        sPh.debug(String.format("Validated config in {0} ms with {1} error(s) and {2} warnings(s)", (end - start), iErrors, iWarnings));
 
         return iErrors === 0;
     };
@@ -75,7 +75,7 @@
         end,
         validConfig;
         $.getJSON("config.json", function (data) {
-            console.group("start up");
+            sPh.group("start up");
             validConfig = sPh.validateConfig(data);
             if (!validConfig) {
                 return;
@@ -83,27 +83,27 @@
             sPh.clearMenu();
             Object.keys(data).forEach(function (categoryKey) {
                 var oCategory = data[categoryKey];
-                console.group(categoryKey);
+                sPh.group(categoryKey);
                 if (!oCategory.text) {
                     oCategory.text = oCategory.name;
                 }
 
                 sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
                 sPh.createPage(oCategory);
-                console.groupEnd();
+                sPh.groupEnd();
             });
         }).fail(function (jqxhr, text, error) {
-            console.error(String.format("Coudn't read config: {0}. {1}", text, error));
+            sPh.error(String.format("Coudn't read config: {0}. {1}", text, error));
         }).done(function () {
             if (validConfig)  {
-                console.group("Navigation");
+                sPh.group("Navigation");
                 sPh.addNavigation($('[name="btnMenu"]'), 'menu', true);
-                console.groupEnd();
+                sPh.groupEnd();
             }
         }).always(function () {
             end = performance.now();
-            console.debug(String.format("Total startup time: {0} ms", (end - start)));
-            console.groupEnd();
+            sPh.debug(String.format("Total startup time: {0} ms", (end - start)));
+            sPh.groupEnd();
         });
     };
 
@@ -117,19 +117,19 @@
 
         if (oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
-            console.debug("Created items for " + oCategory.name);
+            sPh.debug("Created items for " + oCategory.name);
         }
 
         page = $(String.format("<div data-role='page' id='{0}'>{1}{2}{3}</div>", oCategory.name, header, body, footer));
         page.appendTo($.mobile.pageContainer);
-        console.debug("Created page " + oCategory.name);
+        sPh.debug("Created page " + oCategory.name);
 
         if (oCategory.objects) {
             sPh.createEvents(oCategory.objects);
-            console.debug("Created events for " + oCategory.name);
+            sPh.debug("Created events for " + oCategory.name);
         }
         end = performance.now();
-        console.debug(String.format("created page {1} in: {0} ms", (end - start), oCategory.name));
+        sPh.debug(String.format("created page {1} in: {0} ms", (end - start), oCategory.name));
     };
 
     sPh.createEvents = function (aObjects) {
@@ -190,7 +190,7 @@
         }
         html += "</div>";
         end = performance.now();
-        console.debug(String.format("Created items in {0} ms", (end - start)));
+        sPh.debug(String.format("Created items in {0} ms", (end - start)));
         return html;
     };
 
