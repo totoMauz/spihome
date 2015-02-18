@@ -2,6 +2,11 @@
     "use strict";
     var $menu = $(".ui-content", "#menu");
 
+    sPh.removeOldPages = function () {
+        $("div[data-role='page']:not(#menu,#options)").remove();
+        sPh.debug("Removed old pages");
+    };
+
     sPh.validateConfig = function (oConfig) {
         var start = performance.now(),
         end,
@@ -81,6 +86,7 @@
                 return;
             }
             sPh.clearMenu();
+            sPh.removeOldPages();
             Object.keys(data).forEach(function (categoryKey) {
                 var oCategory = data[categoryKey];
                 sPh.group(categoryKey);
@@ -110,7 +116,7 @@
     sPh.createPage = function (oCategory) {
         var start = performance.now(),
         end,
-        header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
+        header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-bars' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
         body = "",
         footer = "",
         page;
@@ -160,7 +166,7 @@
 
         aObjects.sortBy("location");
 
-        html = "<div role='main' class='ui-content'>";
+        html = "<div data-role='main' class='ui-content'>";
         aObjects.forEach(function (obj) {
             if (obj.location !== currentLocation) {
                 if (currentLocation !== undefined) {
@@ -244,5 +250,19 @@
 }(window.sPh = window.sPh || {}, jQuery));
 
 $(document).ready(function () {
+    //we want this after all subpages are created, so not using $(document).on("pagecreate", function(){}) is fine
     sPh.addPageContainerListener();
+
+    $("#activeTheme").change(function(event, ui) {
+        var allPages = $("div[data-role='page'],div[data-role='dialog']");
+
+        switch ($(this).val()) {
+        case 'a':
+            allPages.removeClass("ui-page-theme-b").addClass("ui-page-theme-a");
+            break;
+        case 'b':
+            allPages.removeClass("ui-page-theme-a").addClass("ui-page-theme-b");
+            break;
+        }
+    });
 });

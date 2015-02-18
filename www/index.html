@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>SPi/Home</title>
     <meta name="viewport" content="width=device-width,user-scalable=yes">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <!-- <link rel="icon" type="image/png" href="/img/favicon.png"/> -->
@@ -10,15 +11,36 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
   <body>
+    <!-- Menu page -->
     <div data-role="page" id="menu">
       <div data-role="header">
         <h1>S&Pi;/Home</h1>
-
+        <a href="#options" data-rel="dialog" data-transition="slidedown" class='ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-gear ui-btn-icon-notext' name='btnOptions' id='btnOptions'>Options</a>
       </div>
-      <div role="main" class="ui-content">
-    <!-- Buttons will be inserted by config.js -->
+      <div data-role="main" class="ui-content">
+        <!-- Buttons will be inserted by config.js -->
       </div>
     </div>
+
+    <!-- Options page -->
+    <div data-role="page" id="options">
+      <div data-role="header">
+        <h1>Options</h1>
+      </div>
+      <div data-role="main" class="ui-content">
+        <button class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh' name='btnRefresh' id='btnRefreshMenu' onclick="sPh.readConfig();">Refresh menu</button>
+        <label for="activeTheme">Choose a style:</label>
+        <select name="activeTheme" id="activeTheme">
+          <option selected value="a">Light theme</option>
+          <option value="b">Dark theme</option>
+        </select>
+
+      </div>
+      <div data-role="footer">
+        <a href="#menu" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-back'>Close</a>
+      </div>
+    </div>
+
     <!-- Pages will be inserted by config.js -->
     <script src="/js/util.js"></script>
     <script src="/js/config.js"></script>

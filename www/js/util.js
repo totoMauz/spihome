@@ -8,7 +8,7 @@
         DEBUG: {value: 4, name: "debug"}
     });
 
-    sPh.activeLogLevel = sPh.logLevel.WARNING;
+    sPh.activeLogLevel = sPh.logLevel.DEBUG;
 
     sPh.error = function(sMessage) {
         sPh.log(sPh.logLevel.ERROR.value, sMessage);
@@ -29,7 +29,7 @@
     };
 
     sPh.groupEnd = function () {
-        if(sPh.activeLogLevel.name >= sPh.logLevel.DEBUG.value) {
+        if(sPh.activeLogLevel.value >= sPh.logLevel.DEBUG.value) {
             console.groupEnd();
         }
     };

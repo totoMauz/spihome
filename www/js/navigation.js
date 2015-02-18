@@ -37,7 +37,6 @@
             break;
         }
 
-
         $('#' + sName).click(function () {
             sPh.debug(sName + " clicked");
             fnAction();
