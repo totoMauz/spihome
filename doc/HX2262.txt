@@ -1,0 +1,66 @@
+encoder: PT2262 or HX2262
+decoder: PT2272 or HX2272
+
+receiver must be a PT2272-M2 or PT2272A-M2.
+The sender can be used universally to send 0/2/../6 data bits.
+The receiver must be specific to the actual amount of data bits transmitted, because the number and value of the address bits must match the filter in the receiver.
+As the wall power plugs use 2 bit data (actually they really "use" only one of the two), the wall plugs must use the PT2272/A-M2.
+
+OOK pulse lengths:
+	dT-min = 325 µs ("false" "0")
+	dT-max = 986 µs ("true"  "1")
+	dT-mid = 656 µs (mid-point between short pulses and long pulses, everything longer than this is a "1", everything shorter than this is a "0")
+
+pulse length to bit-value:
+	dT-bit > dt-mid == 1
+	dT-bit < dt-mid == 0
+
+two bit code. first bit must be 1, second bit contains the data.
+
+HHHH=house code (BINARY: 10001 DIP-SWITCHES: ON-OFF-OFF-OFF-ON)
+UUUU=unit code
+S = desired state
+s = !S (inverted state)
+
+A-UNIT=10000
+B-UNIT=01000
+C-UNIT=00100
+D-UNIT=00010
+E-UNIT=00001 ????? (no button on my remote...)
+
+				  HHHHHUUUUUSs
+A-ON:
+	ON-AIR      : 101011001100110010101010110011001100110010101100
+	DECODED     : 1   0   0   0   1   1   0   0   0   0   1   0
+	RAW DATA[24]: 111010101111101010101110
+	DECODED DATA: 100011000010
+
+A-OFF:
+	RAW DATA[24]: 111010101111101010101011
+	DECODED DATA: 100011000001
+
+B-ON:
+				  101011001100110010101100101011001100110010101100
+				  1   0   0   0   1   0   1   0   0   0   1   0
+	RAW DATA[24]: 111010101110111010101110
+	DECODED DATA: 100010100010
+
+B-OFF:
+	RAW DATA[24]: 111010101110111010101011
+	DECODED DATA: 100010100001
+
+C-ON:
+	RAW DATA[24]: 111010101110101110101110
+	DECODED DATA: 100010010010
+
+C-OFF:
+	RAW DATA[24]: 111010101110101110101011
+	DECODED DATA: 100010010001
+
+D-ON:
+	RAW DATA[24]: 111010101110101011101110
+	DECODED DATA: 100010001010
+
+D-OFF:
+	RAW DATA[24]: 111010101110101011101011
+	DECODED DATA: 100010001001

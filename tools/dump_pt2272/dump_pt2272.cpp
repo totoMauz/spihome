@@ -33,22 +33,13 @@ using namespace cl3::io::phy;
 using namespace cl3::io::phy::radio;
 using namespace cl3::io::phy::bcm2835;
 
-struct TConsoleDumper : IOut<bool>
+static void pt2272_OnData(TSoftPT2272::TOnDataEvent&, TSoftPT2272& sender, TSoftPT2272::TOnDataData data, void*)
 {
-	void	Flush	() final override
-	{
-		putchar('\n');
-	}
-
-	usys_t	Write	(const bool* arr_items_write, usys_t n_items_write_max, usys_t) final override CL3_WARN_UNUSED_RESULT
-	{
-		printf("DATA: ");
-		for(usys_t i = 0; i < n_items_write_max; i++)
-			putchar(arr_items_write[i] ? '1' : '0');
-		putchar('\n');
-		return n_items_write_max;
-	}
-};
+	printf("received data from pt2262:\n\ttarget address: 0x%03hx\n\tdata: [", data.address);
+	for(usys_t i = 0; i < sender.DataBits(); i++)
+		printf("%s%s", i == 0 ? "" : ", ", data.arr_data[i] ? "true" : "false");
+	printf(" ]\n\n");
+}
 
 int main(int argc, char* argv[])
 {
@@ -74,11 +65,12 @@ int main(int argc, char* argv[])
 
 		TGPIO gpio;
 
-		fprintf(stderr, "decoded data follows (press <CTRL-C> to quit):\n\n");
+		fprintf(stderr, "PT2272 event data follows (press <CTRL-C> to quit):\n\n");
 
-		TConsoleDumper dumper;
+		TSoftPT2272 pt2272(10,2);	//	10 address bits, 2 data bits, promiscuous mode (receive all traffic)
+		pt2272.OnData().Register<void>(&pt2272_OnData, (void*)NULL);
 		TOOKDecoder ook_decoder;
-		ook_decoder.Sink(&dumper);
+		ook_decoder.Sink(&pt2272);
 		TGPIOPulseReader pulse_reader(gpio.Pins()[idx_pin], false, 0.005);	//	pass selected GPIO-PIN, normal line level, flush buffer after 5ms of silence
 		pulse_reader.Sink(&ook_decoder);
 
