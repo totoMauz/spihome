@@ -1,5 +1,5 @@
 /*
-    Dump-OOK - Tool which dumps the decoded data-bits of an OOK encoded (but already demodulated) datastream, which it reads from a GPIO-PIN
+    Dump-PT2272 - Tool which emulates the behavior of an PT2272 chip  and dumps the data and address information sent by an PT2262 chip
     Copyright (C) 2015	Simon Brennecke
 
     This program is free software: you can redistribute it and/or modify
