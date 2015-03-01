@@ -1,5 +1,95 @@
 (function (sPh, $, undefined) {
     "use strict";
+	/**
+	 * Logging
+	 */
+	sPh.logLevel = Object.freeze({
+        NONE: {value: 1, name: "none"},
+        ERROR: {value: 2, name: "error"},
+        WARNING: {value: 3 , name: "warning"},
+        DEBUG: {value: 4, name: "debug"}
+    });
+    sPh.activeLogLevel = sPh.logLevel.DEBUG;
+
+    sPh.error = function(sMessage) {
+        sPh.log(sPh.logLevel.ERROR.value, sMessage);
+    };
+
+    sPh.warn = function(sMessage) {
+        sPh.log(sPh.logLevel.WARNING.value, sMessage);
+    };
+
+    sPh.debug = function(sMessage) {
+        sPh.log(sPh.logLevel.DEBUG.value, sMessage);
+    };
+
+    sPh.group = function () {
+        if(sPh.activeLogLevel.value >= sPh.logLevel.DEBUG.value) {
+            console.group();
+        }
+    };
+
+    sPh.groupEnd = function () {
+        if(sPh.activeLogLevel.value >= sPh.logLevel.DEBUG.value) {
+            console.groupEnd();
+        }
+    };
+
+    sPh.log = function(iLevel, sMessage) {
+        if(sPh.activeLogLevel.value >= iLevel) {
+            switch (iLevel) {
+            case sPh.logLevel.ERROR.value:
+                console.error(sMessage);
+                break;
+
+            case sPh.logLevel.WARNING.value:
+                console.warn(sMessage);
+                break;
+
+            case sPh.logLevel.DEBUG.value:
+                console.debug(sMessage);
+                break;
+            }
+        }
+    };
+
+	/**
+	 * Helper functions
+	 */
+    if (!String.format) {
+        String.format = function (format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function (match, number) {
+                return args[number] !== undefined ? args[number] : match;
+            });
+        };
+        sPh.debug("Created String.format");
+    }
+
+    function dynamicSort(property) {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a, b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        };
+    }
+
+    Object.defineProperty(Array.prototype, "sortBy", {
+        enumerable: false,
+        writable: true,
+        value: function () {
+            return this.sort(dynamicSort.apply(null, arguments));
+        }
+    });
+    sPh.debug("Created Array.sortBy");
+	
+	/**
+	 * Navigation
+	 */
     var $menu = $(".ui-content", "#menu");
 
     sPh.removeOldPages = function () {
@@ -7,6 +97,9 @@
         sPh.debug("Removed old pages");
     };
 
+	/**
+	 * Config
+	 */
     sPh.validateConfig = function (oConfig) {
         var start = performance.now(),
         end,
@@ -74,7 +167,6 @@
         return iErrors === 0;
     };
 
-
     sPh.readConfig = function () {
         var start = performance.now(),
         end,
@@ -99,7 +191,7 @@
                 sPh.groupEnd();
             });
         }).fail(function (jqxhr, text, error) {
-            sPh.error(String.format("Coudn't read config: {0}. {1}", text, error));
+            sPh.error(String.format("Couldn't read config: {0}. {1}", text, error));
         }).done(function () {
             if (validConfig)  {
                 sPh.group("Navigation");
@@ -245,22 +337,80 @@
         $("span[data-role='button']", "#menu").remove();
     };
 
+	    sPh.addNavigation = function ($selector, sName, isReverse) {
+        sPh.debug("attached click event to " + $selector.map(function () {return this.id; }).get());
+
+        //if it's not a button, assume it's one of the generated ones - get it's 'div button' parent
+        var $eventSource = $selector.is("button") ? $selector : $selector.parent('.ui-btn');
+		
+		$eventSource.on("click", function(evt) {
+            sPh.debug("click event from " + (evt.target.id || evt.target.children[0].id));
+            $.mobile.pageContainer.pagecontainer('change', '#' + sName, {
+                transition: 'slide',
+                changeHash: true,
+                reverse: isReverse || false,
+                showLoadMsg: true
+            });
+        });
+    };
+
+    sPh.addClickEvent = function (sName, sAction, aParameter) {
+        var fnAction;
+
+        if (aParameter instanceof Array === false) {
+            aParameter = [aParameter];
+        }
+
+        switch (sAction) {
+        case "cec":
+            fnAction = function () {
+                alert(String.format("echo '{0}' | cec-client -s -d 1", aParameter[0]));
+            };
+            break;
+        default:
+            fnAction = function (aParameter) {
+                alert(String.format("Action: {0}, Paremeter:{1}", aParameter.toString()));
+            };
+            break;
+        }
+
+        $('#' + sName).click(function () {
+            sPh.debug(sName + " clicked");
+            fnAction();
+        });
+    };
+
+    sPh.addPageContainerListener = function () {
+        $.mobile.pageContainer.on("pagecontainerchangefailed", function (event, ui) {
+            sPh.error("Coudn't change page to " + ui.toPage);
+        });
+        $.mobile.pageContainer.on("pagecontainerchange", function (event, ui) {
+            sPh.debug("Page changed to " + ui.toPage.map(function () {return this.id; }).get());
+        });
+    };
+	
     //execute this on start up
-    sPh.readConfig();
+    sPh.readConfig();	
 }(window.sPh = window.sPh || {}, jQuery));
 
 $(document).ready(function () {
     //we want this after all subpages are created, so not using $(document).on("pagecreate", function(){}) is fine
     sPh.addPageContainerListener();
 
-    $("#activeTheme").change(function(event, ui) {
-        var allPages = $("div[data-role='page'],div[data-role='dialog']");
+    $("#activeTheme").on("change", function(event, ui) {
+        var allPages = $("div[data-role='page'],div[data-role='dialog']"),
+		    dialogs = $("div[data-role='dialog']");
 
         switch ($(this).val()) {
         case 'a':
+			dialogs.attr({"data-overlay-theme":'a',
+			             "data-theme": 'a'});
             allPages.removeClass("ui-page-theme-b").addClass("ui-page-theme-a");
+			
             break;
         case 'b':
+			dialogs.attr({"data-overlay-theme":'b',
+			             "data-theme": 'b'});
             allPages.removeClass("ui-page-theme-a").addClass("ui-page-theme-b");
             break;
         }
