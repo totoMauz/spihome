@@ -395,24 +395,18 @@
 
 $(document).ready(function () {
     //we want this after all subpages are created, so not using $(document).on("pagecreate", function(){}) is fine
-    sPh.addPageContainerListener();
-
-    $("#activeTheme").on("change", function(event, ui) {
+    sPh.addPageContainerListener();	
+    $("[name=active-theme]").on("change", function(event, ui) {
         var allPages = $("div[data-role='page'],div[data-role='dialog']"),
-		    dialogs = $("div[data-role='dialog']");
-
-        switch ($(this).val()) {
-        case 'a':
-			dialogs.attr({"data-overlay-theme":'a',
-			             "data-theme": 'a'});
-            allPages.removeClass("ui-page-theme-b").addClass("ui-page-theme-a");
+		    dialogs = $("div[data-role='dialog']"),
+			oldTheme = "",
+			newTheme = "";
+		oldTheme = dialogs.attr("data-theme");
+		newTheme = $(this).val();
 			
-            break;
-        case 'b':
-			dialogs.attr({"data-overlay-theme":'b',
-			             "data-theme": 'b'});
-            allPages.removeClass("ui-page-theme-a").addClass("ui-page-theme-b");
-            break;
-        }
+		dialogs.attr({"data-overlay-theme": newTheme,
+			             "data-theme": newTheme});
+		allPages.removeClass("ui-page-theme-" + oldTheme).addClass("ui-page-theme-" + newTheme);
     });
+	
 });

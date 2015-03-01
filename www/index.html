@@ -29,12 +29,17 @@
       </div>
       <div data-role="main" class="ui-content">
         <button class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh' name='btnRefresh' id='btnRefreshMenu' onclick="sPh.readConfig();">Refresh menu</button>
-        <label for="activeTheme">Choose a style:</label>
-        <select name="activeTheme" id="activeTheme">
-          <option selected value="a">Light theme</option>
-          <option value="b">Dark theme</option>
-        </select>
-
+        
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<legend>Choose a style:</legend>
+				<label for="theme-a">Light Theme</label>
+				<input type="radio" name="active-theme" id="theme-a" value='a' checked="checked" />
+				
+				<label for="theme-b">Dark Theme</label>
+				<input type="radio" name="active-theme" id="theme-b" value='b' />
+			</fieldset>
+		</div>
       </div>
       <div data-role="footer">
         <a href="#menu" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-back'>Close</a>
