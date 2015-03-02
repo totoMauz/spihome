@@ -58,6 +58,12 @@
                     {"name": "heater3",
                      "text": "Bed room",
                      "template": "slider",
-                     "location": "Bed room"}]
+                     "location": "Bed room"},
+					 {"name": "heater3_boost",
+					  "text": "Bed room boost",
+					  "template": "button",
+					  "location": "Bed room",
+					  "action": "boost",
+                      "parameter": ["heater3_id"]}]
     }
 }

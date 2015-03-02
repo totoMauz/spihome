@@ -368,8 +368,8 @@
             };
             break;
         default:
-            fnAction = function (aParameter) {
-                alert(String.format("Action: {0}, Paremeter:{1}", aParameter.toString()));
+            fnAction = function () {
+                alert(String.format("Action: {0}, Paremeter:{1}", sAction, aParameter.toString()));
             };
             break;
         }
