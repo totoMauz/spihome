@@ -1,6 +1,8 @@
 encoder: PT2262 or HX2262
 decoder: PT2272 or HX2272
 
+800 baud
+
 receiver must be a PT2272-M2 or PT2272A-M2.
 The sender can be used universally to send 0/2/../6 data bits.
 The receiver must be specific to the actual amount of data bits transmitted, because the number and value of the address bits must match the filter in the receiver.

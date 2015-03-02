@@ -20,11 +20,11 @@
 // INPUT DATA
 /*
 // Crys_freq(Hz): 30000000    Crys_tol(ppm): 20    IF_mode: 2    High_perf_Ch_Fil: 1    OSRtune: 0    Ch_Fil_Bw_AFC: 0    ANT_DIV: 0    PM_pattern: 15    
-// MOD_type: 1    Rsymb(sps): 1000    Fdev(Hz): 10000    RXBW(Hz): 200000    Manchester: 0    AFC_en: 0    Rsymb_error: 0.1    Chip-Version: 2    
+// MOD_type: 1    Rsymb(sps): 800    Fdev(Hz): 8000    RXBW(Hz): 250000    Manchester: 0    AFC_en: 0    Rsymb_error: 0.1    Chip-Version: 2    
 // RF Freq.(MHz): 433.92    API_TC: 29    fhst: 250000    inputBW: 0    BERT: 0    RAW_dout: 0    D_source: 1    Hi_pfm_div: 1    
 // 
 // # RX IF frequency is  -468750 Hz
-// # WB filter 2 (BW = 206.12 kHz);  NB-filter 2 (BW = 206.12 kHz)
+// # WB filter 2 (BW = 274.83 kHz);  NB-filter 2 (BW = 274.83 kHz)
 // 
 // Modulation index: 20
 */
@@ -50,7 +50,7 @@
 // Command:                  RF_GPIO_PIN_CFG
 // Description:              Configures the GPIO pins.
 */
-#define RF_GPIO_PIN_CFG 0x13, 0x21, 0x20, 0x01, 0x15, 0x27, 0x0B, 0x00
+#define RF_GPIO_PIN_CFG 0x13, 0x21, 0x20, 0x11, 0x14, 0x1B, 0x0B, 0x00
 
 /*
 // Set properties:           RF_GLOBAL_XO_TUNE_1
@@ -61,7 +61,7 @@
 // Descriptions:
 //   GLOBAL_XO_TUNE - Configure the internal capacitor frequency tuning bank for the crystal oscillator.
 */
-#define RF_GLOBAL_XO_TUNE_1 0x11, 0x00, 0x01, 0x00, 0x54
+#define RF_GLOBAL_XO_TUNE_1 0x11, 0x00, 0x01, 0x00, 0x70
 
 /*
 // Set properties:           RF_GLOBAL_CONFIG_1
@@ -453,7 +453,7 @@
 //   MODEM_FREQ_DEV_2 - 17-bit unsigned TX frequency deviation word.
 //   MODEM_FREQ_DEV_1 - 17-bit unsigned TX frequency deviation word.
 */
-#define RF_MODEM_MOD_TYPE_12_1 0x11, 0x20, 0x0C, 0x00, 0x09, 0x00, 0x07, 0x00, 0x27, 0x10, 0x01, 0xC9, 0xC3, 0x80, 0x00, 0x00
+#define RF_MODEM_MOD_TYPE_12_1 0x11, 0x20, 0x0C, 0x00, 0x09, 0x00, 0x07, 0x00, 0x1F, 0x40, 0x01, 0xC9, 0xC3, 0x80, 0x00, 0x00
 
 /*
 // Set properties:           RF_MODEM_FREQ_DEV_0_1_1
@@ -482,7 +482,7 @@
 //   MODEM_DECIMATION_CFG1 - Specifies three decimator ratios for the Cascaded Integrator Comb (CIC) filter.
 //   MODEM_DECIMATION_CFG0 - Specifies miscellaneous parameters and decimator ratios for the Cascaded Integrator Comb (CIC) filter.
 */
-#define RF_MODEM_TX_RAMP_DELAY_8_1 0x11, 0x20, 0x08, 0x18, 0x00, 0x80, 0x08, 0x03, 0x80, 0x00, 0x1A, 0x20
+#define RF_MODEM_TX_RAMP_DELAY_8_1 0x11, 0x20, 0x08, 0x18, 0x00, 0x80, 0x08, 0x03, 0x80, 0x00, 0x0A, 0x11
 
 /*
 // Set properties:           RF_MODEM_BCR_OSR_1_9_1
@@ -501,7 +501,7 @@
 //   MODEM_BCR_GEAR - RX BCR loop gear control.
 //   MODEM_BCR_MISC1 - Miscellaneous control bits for the RX BCR loop.
 */
-#define RF_MODEM_BCR_OSR_1_9_1 0x11, 0x20, 0x09, 0x22, 0x00, 0xEA, 0x02, 0x2F, 0x3E, 0x01, 0x18, 0x00, 0xC2
+#define RF_MODEM_BCR_OSR_1_9_1 0x11, 0x20, 0x09, 0x22, 0x01, 0x87, 0x01, 0x4F, 0x8B, 0x00, 0xA8, 0x00, 0xC2
 
 /*
 // Set properties:           RF_MODEM_AFC_GEAR_7_1
@@ -518,7 +518,7 @@
 //   MODEM_AFC_LIMITER_0 - Set the AFC limiter value.
 //   MODEM_AFC_MISC - Specifies miscellaneous AFC control bits.
 */
-#define RF_MODEM_AFC_GEAR_7_1 0x11, 0x20, 0x07, 0x2C, 0x54, 0x36, 0x00, 0x09, 0x4F, 0xCA, 0x80
+#define RF_MODEM_AFC_GEAR_7_1 0x11, 0x20, 0x07, 0x2C, 0x54, 0x36, 0x00, 0x07, 0x5A, 0xC8, 0x80
 
 /*
 // Set properties:           RF_MODEM_AGC_CONTROL_1_1
@@ -548,7 +548,7 @@
 //   MODEM_FSK4_MAP - 4(G)FSK symbol mapping code.
 //   MODEM_OOK_PDTC - Configures the attack and decay times of the OOK Peak Detector.
 */
-#define RF_MODEM_AGC_WINDOW_SIZE_9_1 0x11, 0x20, 0x09, 0x38, 0x11, 0x33, 0x33, 0x00, 0x02, 0xFF, 0xFF, 0x00, 0x29
+#define RF_MODEM_AGC_WINDOW_SIZE_9_1 0x11, 0x20, 0x09, 0x38, 0x11, 0x56, 0x56, 0x00, 0x02, 0xFF, 0xFF, 0x00, 0x2A
 
 /*
 // Set properties:           RF_MODEM_OOK_CNT1_9
@@ -567,7 +567,7 @@
 //   MODEM_ANT_DIV_CONTROL - Specifies controls for the Antenna Diversity algorithm.
 //   MODEM_RSSI_THRESH - Configures the RSSI threshold.
 */
-#define RF_MODEM_OOK_CNT1_9 0x11, 0x20, 0x09, 0x42, 0x84, 0x01, 0xD6, 0x8F, 0x05, 0x53, 0x01, 0x80, 0x80
+#define RF_MODEM_OOK_CNT1_9 0x11, 0x20, 0x09, 0x42, 0x84, 0x01, 0xD6, 0x8F, 0x03, 0x32, 0x01, 0x80, 0x90
 
 /*
 // Set properties:           RF_MODEM_RSSI_CONTROL_1
@@ -578,7 +578,7 @@
 // Descriptions:
 //   MODEM_RSSI_CONTROL - Control of the averaging modes and latching time for reporting RSSI value(s).
 */
-#define RF_MODEM_RSSI_CONTROL_1 0x11, 0x20, 0x01, 0x4C, 0x03
+#define RF_MODEM_RSSI_CONTROL_1 0x11, 0x20, 0x01, 0x4C, 0x13
 
 /*
 // Set properties:           RF_MODEM_RSSI_COMP_1_1
@@ -589,7 +589,7 @@
 // Descriptions:
 //   MODEM_RSSI_COMP - RSSI compensation value.
 */
-#define RF_MODEM_RSSI_COMP_1_1 0x11, 0x20, 0x01, 0x4E, 0x40
+#define RF_MODEM_RSSI_COMP_1_1 0x11, 0x20, 0x01, 0x4E, 0x3A
 
 /*
 // Set properties:           RF_MODEM_CLKGEN_BAND_1_1
