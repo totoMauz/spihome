@@ -40,6 +40,23 @@
 				<input type="radio" name="active-theme" id="theme-b" value='b' />
 			</fieldset>
 		</div>
+		
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<legend>Set active log level:</legend>
+				<label for="logLevelNone">None</label>
+				<input type="radio" name="active-log-level" id="logLevelNone" value="" />
+				
+				<label for="logLevelError">Errors</label>
+				<input type="radio" name="active-log-level" id="logLevelError" value="" />
+								
+				<label for="logLevelWarning">Warnings</label>
+				<input type="radio" name="active-log-level" id="logLevelWarning" value="" />
+								
+				<label for="logLevelDebug">Debug</label>
+				<input type="radio" name="active-log-level" id="logLevelDebug" value="" checked="checked" />
+			</fieldset>
+		</div>
       </div>
       <div data-role="footer">
         <a href="#menu" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-back'>Close</a>

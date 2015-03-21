@@ -23,18 +23,42 @@
         sPh.log(sPh.logLevel.DEBUG.value, sMessage);
     };
 
-    sPh.group = function () {
+    sPh.group = function() {
         if(sPh.activeLogLevel.value >= sPh.logLevel.DEBUG.value) {
             console.group();
         }
     };
 
-    sPh.groupEnd = function () {
+    sPh.groupEnd = function() {
         if(sPh.activeLogLevel.value >= sPh.logLevel.DEBUG.value) {
             console.groupEnd();
         }
     };
 
+	sPh.lookupLogLevel = function(level) {
+		if(isNaN(level) === false) {
+			//convert to real number
+			level = ~~level;
+		}
+		switch(level) {
+		case sPh.logLevel.NONE.name:
+		case sPh.logLevel.NONE.value:
+			return sPh.logLevel.NONE;
+			
+		case sPh.logLevel.ERROR.name:
+		case sPh.logLevel.ERROR.value:
+			return sPh.logLevel.ERROR;
+
+		case sPh.logLevel.WARNING.name:
+		case sPh.logLevel.WARNING.value:
+			return sPh.logLevel.WARNING;
+
+		case sPh.logLevel.DEBUG.name:
+		case sPh.logLevel.DEBUG.value:
+			return sPh.logLevel.DEBUG;
+		}
+	};
+	
     sPh.log = function(iLevel, sMessage) {
         if(sPh.activeLogLevel.value >= iLevel) {
             switch (iLevel) {
@@ -405,8 +429,16 @@ $(document).ready(function () {
 		newTheme = $(this).val();
 			
 		dialogs.attr({"data-overlay-theme": newTheme,
-			             "data-theme": newTheme});
+			           "data-theme": newTheme});
 		allPages.removeClass("ui-page-theme-" + oldTheme).addClass("ui-page-theme-" + newTheme);
     });
 	
+	//assign enum values to radio buttons
+	$("#logLevelNone").val(sPh.logLevel.NONE.value);
+	$("#logLevelError").val(sPh.logLevel.ERROR.value);
+	$("#logLevelWarning").val(sPh.logLevel.WARNING.value);
+	$("#logLevelDebug").val(sPh.logLevel.DEBUG.value);
+	$("[name=active-log-level]").on("change", function(event, ui) {
+		sPh.activeLogLevel = sPh.lookupLogLevel($(this).val());
+	});
 });
