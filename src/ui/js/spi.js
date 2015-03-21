@@ -79,11 +79,11 @@
 
 	/**
 	 * Helper functions
-	 */
+	 */	 	 
     if (!String.format) {
-        String.format = function (format) {
+        String.format = function (sFormat) {
             var args = Array.prototype.slice.call(arguments, 1);
-            return format.replace(/{(\d+)}/g, function (match, number) {
+            return sFormat.replace(/{(\d+)}/g, function (match, number) {
                 return args[number] !== undefined ? args[number] : match;
             });
         };
@@ -361,7 +361,7 @@
         $("span[data-role='button']", "#menu").remove();
     };
 
-	    sPh.addNavigation = function ($selector, sName, isReverse) {
+	sPh.addNavigation = function ($selector, sName, isReverse) {
         sPh.debug("attached click event to " + $selector.map(function () {return this.id; }).get());
 
         //if it's not a button, assume it's one of the generated ones - get it's 'div button' parent
@@ -414,7 +414,7 @@
     };
 	
     //execute this on start up
-    sPh.readConfig();	
+    sPh.readConfig();
 }(window.sPh = window.sPh || {}, jQuery));
 
 $(document).ready(function () {
