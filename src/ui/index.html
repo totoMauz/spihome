@@ -31,8 +31,8 @@
         <button class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh' name='btnRefresh' id='btnRefreshMenu' onclick="sPh.readConfig();">Refresh menu</button>
         
 		<div data-role="fieldcontain">
-			<fieldset data-role="controlgroup">
-				<legend>Choose a style:</legend>
+			<fieldset data-role="controlgroup" data-theme="a" data-content-theme="a">
+				<legend>Choose a style:</legend> 		
 				<label for="theme-a">Light Theme</label>
 				<input type="radio" name="active-theme" id="theme-a" value='a' checked="checked" />
 				
@@ -42,7 +42,7 @@
 		</div>
 		
 		<div data-role="fieldcontain">
-			<fieldset data-role="controlgroup">
+			<fieldset data-role="controlgroup" data-theme="a" data-content-theme="a">
 				<legend>Set active log level:</legend>
 				<label for="logLevelNone">None</label>
 				<input type="radio" name="active-log-level" id="logLevelNone" value="" />

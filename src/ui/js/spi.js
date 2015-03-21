@@ -423,6 +423,7 @@ $(document).ready(function () {
     $("[name=active-theme]").on("change", function(event, ui) {
         var allPages = $("div[data-role='page'],div[data-role='dialog']"),
 		    dialogs = $("div[data-role='dialog']"),
+			fieldsets = $('fieldset'),
 			oldTheme = "",
 			newTheme = "";
 		oldTheme = dialogs.attr("data-theme");
@@ -430,7 +431,13 @@ $(document).ready(function () {
 			
 		dialogs.attr({"data-overlay-theme": newTheme,
 			           "data-theme": newTheme});
+		fieldsets.attr({"data-theme": newTheme,
+			           "data-content-theme": newTheme});		   
+					   
+					   
+		fieldsets.removeClass("ui-group-theme-" + oldTheme).addClass("ui-group-theme-" + newTheme);
 		allPages.removeClass("ui-page-theme-" + oldTheme).addClass("ui-page-theme-" + newTheme);
+		sPh.debug("Changed active theme to " + newTheme);
     });
 	
 	//assign enum values to radio buttons
@@ -440,5 +447,6 @@ $(document).ready(function () {
 	$("#logLevelDebug").val(sPh.logLevel.DEBUG.value);
 	$("[name=active-log-level]").on("change", function(event, ui) {
 		sPh.activeLogLevel = sPh.lookupLogLevel($(this).val());
+		sPh.debug("Changed active log level to " + sPh.activeLogLevel.name);
 	});
 });
