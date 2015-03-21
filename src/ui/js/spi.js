@@ -1,9 +1,9 @@
 (function (sPh, $, undefined) {
     "use strict";
-	/**
-	 * Logging
-	 */
-	sPh.logLevel = Object.freeze({
+    /**
+     * Logging
+     */
+    sPh.logLevel = Object.freeze({
         NONE: {value: 1, name: "none"},
         ERROR: {value: 2, name: "error"},
         WARNING: {value: 3 , name: "warning"},
@@ -35,30 +35,30 @@
         }
     };
 
-	sPh.lookupLogLevel = function(level) {
-		if(isNaN(level) === false) {
-			//convert to real number
-			level = ~~level;
-		}
-		switch(level) {
-		case sPh.logLevel.NONE.name:
-		case sPh.logLevel.NONE.value:
-			return sPh.logLevel.NONE;
-			
-		case sPh.logLevel.ERROR.name:
-		case sPh.logLevel.ERROR.value:
-			return sPh.logLevel.ERROR;
+    sPh.lookupLogLevel = function(level) {
+        if(isNaN(level) === false) {
+            //convert to real number
+            level = ~~level;
+        }
+        switch(level) {
+        case sPh.logLevel.NONE.name:
+        case sPh.logLevel.NONE.value:
+            return sPh.logLevel.NONE;
+            
+        case sPh.logLevel.ERROR.name:
+        case sPh.logLevel.ERROR.value:
+            return sPh.logLevel.ERROR;
 
-		case sPh.logLevel.WARNING.name:
-		case sPh.logLevel.WARNING.value:
-			return sPh.logLevel.WARNING;
+        case sPh.logLevel.WARNING.name:
+        case sPh.logLevel.WARNING.value:
+            return sPh.logLevel.WARNING;
 
-		case sPh.logLevel.DEBUG.name:
-		case sPh.logLevel.DEBUG.value:
-			return sPh.logLevel.DEBUG;
-		}
-	};
-	
+        case sPh.logLevel.DEBUG.name:
+        case sPh.logLevel.DEBUG.value:
+            return sPh.logLevel.DEBUG;
+        }
+    };
+
     sPh.log = function(iLevel, sMessage) {
         if(sPh.activeLogLevel.value >= iLevel) {
             switch (iLevel) {
@@ -77,9 +77,9 @@
         }
     };
 
-	/**
-	 * Helper functions
-	 */	 	 
+    /**
+     * Helper functions
+     */          
     if (!String.format) {
         String.format = function (sFormat) {
             var args = Array.prototype.slice.call(arguments, 1);
@@ -110,10 +110,10 @@
         }
     });
     sPh.debug("Created Array.sortBy");
-	
-	/**
-	 * Navigation
-	 */
+    
+    /**
+     * Navigation
+     */
     var $menu = $(".ui-content", "#menu");
 
     sPh.removeOldPages = function () {
@@ -121,9 +121,9 @@
         sPh.debug("Removed old pages");
     };
 
-	/**
-	 * Config
-	 */
+    /**
+     * Config
+     */
     sPh.validateConfig = function (oConfig) {
         var start = performance.now(),
         end,
@@ -361,13 +361,13 @@
         $("span[data-role='button']", "#menu").remove();
     };
 
-	sPh.addNavigation = function ($selector, sName, isReverse) {
+    sPh.addNavigation = function ($selector, sName, isReverse) {
         sPh.debug("attached click event to " + $selector.map(function () {return this.id; }).get());
 
         //if it's not a button, assume it's one of the generated ones - get it's 'div button' parent
         var $eventSource = $selector.is("button") ? $selector : $selector.parent('.ui-btn');
-		
-		$eventSource.on("click", function(evt) {
+
+        $eventSource.on("click", function(evt) {
             sPh.debug("click event from " + (evt.target.id || evt.target.children[0].id));
             $.mobile.pageContainer.pagecontainer('change', '#' + sName, {
                 transition: 'slide',
@@ -412,41 +412,41 @@
             sPh.debug("Page changed to " + ui.toPage.map(function () {return this.id; }).get());
         });
     };
-	
+    
     //execute this on start up
     sPh.readConfig();
 }(window.sPh = window.sPh || {}, jQuery));
 
 $(document).ready(function () {
     //we want this after all subpages are created, so not using $(document).on("pagecreate", function(){}) is fine
-    sPh.addPageContainerListener();	
+    sPh.addPageContainerListener();    
     $("[name=active-theme]").on("change", function(event, ui) {
         var allPages = $("div[data-role='page'],div[data-role='dialog']"),
-		    dialogs = $("div[data-role='dialog']"),
-			fieldsets = $('fieldset'),
-			oldTheme = "",
-			newTheme = "";
-		oldTheme = dialogs.attr("data-theme");
-		newTheme = $(this).val();
-			
-		dialogs.attr({"data-overlay-theme": newTheme,
-			           "data-theme": newTheme});
-		fieldsets.attr({"data-theme": newTheme,
-			           "data-content-theme": newTheme});		   
-					   
-					   
-		fieldsets.removeClass("ui-group-theme-" + oldTheme).addClass("ui-group-theme-" + newTheme);
-		allPages.removeClass("ui-page-theme-" + oldTheme).addClass("ui-page-theme-" + newTheme);
-		sPh.debug("Changed active theme to " + newTheme);
+            dialogs = $("div[data-role='dialog']"),
+            fieldsets = $('fieldset'),
+            oldTheme = "",
+            newTheme = "";
+        oldTheme = dialogs.attr("data-theme");
+        newTheme = $(this).val();
+            
+        dialogs.attr({"data-overlay-theme": newTheme,
+                       "data-theme": newTheme});
+        fieldsets.attr({"data-theme": newTheme,
+                       "data-content-theme": newTheme});           
+                       
+                       
+        fieldsets.removeClass("ui-group-theme-" + oldTheme).addClass("ui-group-theme-" + newTheme);
+        allPages.removeClass("ui-page-theme-" + oldTheme).addClass("ui-page-theme-" + newTheme);
+        sPh.debug("Changed active theme to " + newTheme);
     });
-	
-	//assign enum values to radio buttons
-	$("#logLevelNone").val(sPh.logLevel.NONE.value);
-	$("#logLevelError").val(sPh.logLevel.ERROR.value);
-	$("#logLevelWarning").val(sPh.logLevel.WARNING.value);
-	$("#logLevelDebug").val(sPh.logLevel.DEBUG.value);
-	$("[name=active-log-level]").on("change", function(event, ui) {
-		sPh.activeLogLevel = sPh.lookupLogLevel($(this).val());
-		sPh.debug("Changed active log level to " + sPh.activeLogLevel.name);
-	});
+
+    //assign enum values to radio buttons
+    $("#logLevelNone").val(sPh.logLevel.NONE.value);
+    $("#logLevelError").val(sPh.logLevel.ERROR.value);
+    $("#logLevelWarning").val(sPh.logLevel.WARNING.value);
+    $("#logLevelDebug").val(sPh.logLevel.DEBUG.value);
+    $("[name=active-log-level]").on("change", function(event, ui) {
+        sPh.activeLogLevel = sPh.lookupLogLevel($(this).val());
+        sPh.debug("Changed active log level to " + sPh.activeLogLevel.name);
+    });
 });
