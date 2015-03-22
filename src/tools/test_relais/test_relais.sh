@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function at_exit()
+function cleanup()
 {
 	while read pin; do
 		echo $pin > /sys/class/gpio/unexport
@@ -9,10 +9,17 @@ function at_exit()
 	while read pin; do
 		echo $pin > /sys/class/gpio/unexport
 	done < r2.txt
+}
+
+function at_exit()
+{
+	cleanup
 	exit 0
 }
 
 trap at_exit SIGINT SIGTERM SIGHUP
+
+cleanup >/dev/null 2>&1
 
 while read pin; do
 	echo $pin > /sys/class/gpio/export

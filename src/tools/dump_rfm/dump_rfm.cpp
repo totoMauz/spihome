@@ -47,10 +47,6 @@ using namespace cl3::io::collection::list;
 using namespace cl3::io::text::string;
 using namespace cl3::io::text::encoding;
 
-static void OnPaketRX()
-{
-}
-
 int main(int argc, char* argv[])
 {
 	try
@@ -84,11 +80,6 @@ int main(int argc, char* argv[])
 		pins.Append(gpio.Pins()[7]);	//	chip-select 1
 		TSPIBus spibus(0, pins);
 
-// 		gpio.Pins()[pin_shutdown]->Mode(MODE_OUTPUT);
-// 		gpio.Pins()[pin_shutdown]->Pull(PULL_DISABLED);
-// 		gpio.Pins()[pin_irq     ]->Mode(MODE_INPUT );
-// 		gpio.Pins()[pin_irq     ]->Pull(PULL_DISABLED);
-
 		TRFM rfm(spibus.Devices()[0], gpio.Pins()[pin_shutdown], gpio.Pins()[pin_irq]);
 
 		rfm.Reset();
@@ -113,10 +104,12 @@ int main(int argc, char* argv[])
 			fprintf(stderr, "OK\n");
 		}
 
-		rfm.OnPaketRX().Register(&OnPaketRX);
+		for(unsigned i = 0; i < rfm.Pins().Count(); i++)
+		{
+			fprintf(stderr, "GPIO[%u]: mode = %d ; pull = %d ; level = %s\n", i, rfm.Pins()[i]->Mode(), rfm.Pins()[i]->Pull(), rfm.Pins()[i]->Level() ? "HIGH" : "LOW");
+		}
 
-		fprintf(stderr, "INFO: entering RX mode, decoded data follow:\n");
-		rfm.StartRX();
+		//	TODO
 
 		{
 			sigset_t ss;
