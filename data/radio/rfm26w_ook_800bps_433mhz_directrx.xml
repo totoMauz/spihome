@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="Windows-1252"?>
-<RCA_ProjectData ProjectName="Direct RX" ChipType="Si4463" ChipRevision="B1" Version="3.2.8.0">
+<RCA_ProjectData ProjectName="Direct RX" ChipType="Si4463" ChipRevision="B1" Version="3.2.9.0">
   <DataItems>
     <tbpFrequencyAndPower Type="System.Windows.Forms.TabPage">
       <grbFequencyControl Type="System.Windows.Forms.GroupBox">
@@ -10,7 +10,7 @@
           <Value>433.92</Value>
         </DataItem>
         <DataItem Type="System.Windows.Forms.NumericUpDown" Name="nudChannelSpacing">
-          <Value>250.00</Value>
+          <Value>250</Value>
         </DataItem>
       </grbFequencyControl>
       <grbCrystalControl Type="System.Windows.Forms.GroupBox">
@@ -45,10 +45,10 @@
           <SelectedIndex>0</SelectedIndex>
         </DataItem>
         <DataItem Type="System.Windows.Forms.NumericUpDown" Name="nudDataRate">
-          <Value>1.000</Value>
+          <Value>0.800</Value>
         </DataItem>
         <DataItem Type="NewWDS.Applications.App_Common.CustomContols.NumericUpDownExtended" Name="nudBandwidth">
-          <Value>200.000</Value>
+          <Value>200</Value>
         </DataItem>
         <DataItem Type="System.Windows.Forms.ComboBox" Name="cbbIfMode">
           <SelectedIndex>0</SelectedIndex>
@@ -61,7 +61,7 @@
             <SelectedIndex>3</SelectedIndex>
           </DataItem>
           <DataItem Type="System.Windows.Forms.ComboBox" Name="cbbRssiAverage">
-            <SelectedIndex>0</SelectedIndex>
+            <SelectedIndex>1</SelectedIndex>
           </DataItem>
           <DataItem Type="System.Windows.Forms.CheckBox" Name="chbCheckThresholdAtLatch">
             <Checked>False</Checked>
@@ -154,13 +154,13 @@
           <Checked>False</Checked>
         </DataItem>
         <DataItem Type="System.Windows.Forms.ComboBox" Name="cbbGpio2">
-          <SelectedIndex>TRISTATE</SelectedIndex>
+          <SelectedIndex>RX_DATA_CLK</SelectedIndex>
         </DataItem>
         <DataItem Type="System.Windows.Forms.CheckBox" Name="chbGpio3Pullup">
           <Checked>False</Checked>
         </DataItem>
         <DataItem Type="System.Windows.Forms.ComboBox" Name="cbbGpio3">
-          <SelectedIndex>RX_RAW_DATA</SelectedIndex>
+          <SelectedIndex>RX_DATA</SelectedIndex>
         </DataItem>
         <DataItem Type="System.Windows.Forms.CheckBox" Name="chbNirqPullup">
           <Checked>False</Checked>
