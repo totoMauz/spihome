@@ -117,7 +117,7 @@
     var $menu = $(".ui-content", "#menu");
 
     sPh.removeOldPages = function () {
-        $("div[data-role='page']:not(#menu,#options)").remove();
+        $("div[data-role='page']:not(#menu,#options,#login)").remove();
         sPh.debug("Removed old pages");
     };
 
@@ -411,6 +411,19 @@
         $.mobile.pageContainer.on("pagecontainerchange", function (event, ui) {
             sPh.debug("Page changed to " + ui.toPage.map(function () {return this.id; }).get());
         });
+    };
+    
+    sPh.login = function () {
+		var $password = $("#txt-password");
+        //TODO implement password service in backend
+        if($password.val()) {
+			sPh.debug("Successful login attempt");
+            $.mobile.changePage($("#menu"));
+        } else 
+		{
+			$password.addClass("error").focus();
+			sPh.warn("Failed login attempt");
+		}
     };
     
     //execute this on start up

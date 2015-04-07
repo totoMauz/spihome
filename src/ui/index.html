@@ -11,6 +11,19 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
   <body>
+    <!-- Login page -->
+    <div data-role="page" id="login">
+      <div data-role="header">
+        <h1>S&Pi;/Home</h1>
+      </div>
+      <div data-role="main" class="ui-content">
+        <h2>Login</h2>
+        <label for="txt-password">Password</label>
+        <input type="password" name="txt-password" id="txt-password" value="" class="required" required/>
+        <button data-role='button' name='btnLogin' id='btnLogin' onclick="sPh.login();">Login</button>
+      </div>
+    </div>
+  
     <!-- Menu page -->
     <div data-role="page" id="menu">
       <div data-role="header">

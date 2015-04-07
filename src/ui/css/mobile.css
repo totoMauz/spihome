@@ -7,3 +7,7 @@ body {
 .large {
     font-size: 20px;
 }
+.error {
+    color: red;
+    border-color: red;
+}
