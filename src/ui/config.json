@@ -16,6 +16,29 @@
                      "location": "Living room"}]
     },
 
+    "menu": {
+        "name": "menu",
+        "text": "",
+        "objects": [{"name": "tvonM",
+                     "text": "TV power on",
+                     "template": "button",
+                     "action": "cec",
+                     "parameter":["on 0"],
+                     "location": "Living room"},
+                    {"name": "tvoffM",
+                     "text": "TV standby",
+                     "template": "button",
+                     "action": "cec",
+                     "parameter": "standby 0",
+                     "location": "Living room"},
+                    {"name": "startKodiM",
+                     "text": "Start Kodi",
+                     "template": "button",
+                     "action": "test",
+                     "parameter": [1,2,3,4,5,6,7],
+                     "location": ""}]
+    },
+    
     "kodi": {
         "name": "kodi",
         "text": "Entertain",
@@ -59,11 +82,11 @@
                      "text": "Bed room",
                      "template": "slider",
                      "location": "Bed room"},
-					 {"name": "heater3_boost",
-					  "text": "Bed room boost",
-					  "template": "button",
-					  "location": "Bed room",
-					  "action": "boost",
+                     {"name": "heater3_boost",
+                      "text": "Bed room boost",
+                      "template": "button",
+                      "location": "Bed room",
+                      "action": "boost",
                       "parameter": ["heater3_id"]}]
     }
 }

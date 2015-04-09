@@ -126,9 +126,9 @@
      */
     sPh.validateConfig = function (oConfig) {
         var start = performance.now(),
-        end,
-        iWarnings = 0,
-        iErrors = 0;
+            end,
+            iWarnings = 0,
+            iErrors = 0;
 
         function checkProperties(aExpected, sActual, bError, sCategory, iIndex) {
             var sMessage;
@@ -156,7 +156,7 @@
         Object.keys(oConfig).forEach(function (sCategory) {
             //check root categories
             var oCategory = oConfig[sCategory],
-            categoryTags = Object.keys(oCategory);
+                categoryTags = Object.keys(oCategory);
 
             categoryTags.forEach(function (sProperty) {
                 var oObjects;
@@ -193,8 +193,8 @@
 
     sPh.readConfig = function () {
         var start = performance.now(),
-        end,
-        validConfig;
+            end,
+            validConfig;
         $.getJSON("config.json", function (data) {
             sPh.group("start up");
             validConfig = sPh.validateConfig(data);
@@ -210,8 +210,16 @@
                     oCategory.text = oCategory.name;
                 }
 
-                sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
-                sPh.createPage(oCategory);
+                if(oCategory.name !== "menu") {
+                    sPh.createMenuButton(oCategory.name, oCategory.text, oCategory.site);
+                    sPh.createPage(oCategory);
+                } else {                    
+                    if (oCategory.objects) {
+                        $("div[data-role='main']", "#menu").append(sPh.createItems(oCategory.objects));
+                        sPh.createEvents(oCategory.objects);
+                        sPh.debug("Created events for " + oCategory.name);
+                    }
+                }
                 sPh.groupEnd();
             });
         }).fail(function (jqxhr, text, error) {
@@ -231,11 +239,11 @@
 
     sPh.createPage = function (oCategory) {
         var start = performance.now(),
-        end,
-        header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-bars' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
-        body = "",
-        footer = "",
-        page;
+            end,
+            header = String.format("<div data-role='header' data-position='fixed'><button class='ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-bars' name='btnMenu' id='{0}Menu'>Menu</button><h1>{1}</h1></div>", oCategory.name, oCategory.text),
+            body = "",
+            footer = "",
+            page;
 
         if (oCategory.objects) {
             body = sPh.createItems(oCategory.objects);
@@ -273,9 +281,9 @@
 
     sPh.createItems = function (aObjects) {
         var start = performance.now(),
-        end,
-        html,
-        currentLocation;
+            end,
+            html,
+            currentLocation;
         if (aObjects instanceof Array === false || aObjects.length < 1) {
             return "";
         }
@@ -283,14 +291,15 @@
         aObjects.sortBy("location");
 
         html = "<div data-role='main' class='ui-content'>";
+        
         aObjects.forEach(function (obj) {
             if (obj.location !== currentLocation) {
                 if (currentLocation !== undefined) {
                     html += "</div>";
                 }
-                html += "<div class='ui-corner-all custom-corners'><div class='ui-bar'>";
-                html += "<h3>" + obj.location + "</h3>";
-                html += "</div><div class='ui-body'>";
+                html += "<div class='ui-corner-all custom-corners'><div class='ui-bar'>" +
+                        "<h3>" + obj.location + "</h3>" +
+                        "</div><div class='ui-body'>";
 
                 currentLocation = obj.location;
             }
@@ -322,11 +331,11 @@
 
     sPh.createSlider = function (sName, sText, oOptions) {
         var label = sPh.createLabel(sName, sText),
-        minValue = 0,
-        maxValue = 5,
-        step = 1,
-        currentValue = 0,
-        slider;
+            minValue = 0,
+            maxValue = 5,
+            step = 1,
+            currentValue = 0,
+            slider;
 
         if (oOptions) {
             minValue = oOptions.min || 0;
@@ -346,7 +355,7 @@
 
     sPh.createToggle = function (sName, sText, oOptions) {
         var label = sPh.createLabel(sName, sText),
-        toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
+            toggle = String.format("<select name='{0}' id='{0}' data-role='slider'><option value='0'>Off</option><option value='1'>On</option></select>", sName);
         return (label + toggle);
     };
 
@@ -439,7 +448,7 @@
 $(document).on("pagebeforechange", function(evt, data){
     if(data.toPage['0'].id !== "login" && sPh.isAuthenticated() === false) {
         evt.preventDefault();
-        sPh.warn("URL navigation while logged out");
+        sPh.warn("Hash navigation attempt while logged out");
         sPh.warn(data.toPage['0'].id);
         $.mobile.changePage($("#login"));
     }
