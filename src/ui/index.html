@@ -22,6 +22,13 @@
         <input type="password" name="txt-password" id="txt-password" value="" class="required" required/>
         <button data-role='button' name='btnLogin' id='btnLogin' onclick="sPh.login();">Login</button>
       </div>
+
+      <div data-role="popup" id="dlg-invalid-password" data-overlay-theme="a" data-theme="a" data-dismissible="false">
+        <div role="main" class="ui-content">
+            <h2>Login Failed</h2>
+            <a href="#login" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-alert'>Ok</a>
+        </div>
+    </div>
     </div>
   
     <!-- Menu page -->

@@ -412,23 +412,38 @@
             sPh.debug("Page changed to " + ui.toPage.map(function () {return this.id; }).get());
         });
     };
+
+    var isAuthenticated = false;
     
+    sPh.isAuthenticated = function () {
+        return isAuthenticated;
+    };
+ 
     sPh.login = function () {
-		var $password = $("#txt-password");
+        var $password = $("#txt-password");
         //TODO implement password service in backend
         if($password.val()) {
-			sPh.debug("Successful login attempt");
+            sPh.debug("Successful login attempt");
+            isAuthenticated = true;
             $.mobile.changePage($("#menu"));
-        } else 
-		{
-			$password.addClass("error").focus();
-			sPh.warn("Failed login attempt");
-		}
+        } else {
+            $("#dlg-invalid-password").popup("open");
+            sPh.warn("Failed login attempt");
+        }
     };
-    
+
     //execute this on start up
     sPh.readConfig();
 }(window.sPh = window.sPh || {}, jQuery));
+
+$(document).on("pagebeforechange", function(evt, data){
+    if(data.toPage['0'].id !== "login" && sPh.isAuthenticated() === false) {
+        evt.preventDefault();
+        sPh.warn("URL navigation while logged out");
+        sPh.warn(data.toPage['0'].id);
+        $.mobile.changePage($("#login"));
+    }
+});
 
 $(document).ready(function () {
     //we want this after all subpages are created, so not using $(document).on("pagecreate", function(){}) is fine
