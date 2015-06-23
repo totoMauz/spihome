@@ -9,3 +9,5 @@ STOP:
 10100100000101100000001
 
 looks very much like an PT2262
+
+36 KHz infrared, OOK modulated
