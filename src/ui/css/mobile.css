@@ -1,5 +1,6 @@
 body {
     font-size: 16px;
+    font-family: sans-serif;
 }
 .small {
     font-size: 12px;
@@ -7,7 +8,53 @@ body {
 .large {
     font-size: 20px;
 }
-.error {
-    color: red;
-    border-color: red;
+.menu {
+    padding: 2px;
+}
+.hidden {
+    display: none;
+}
+.menu ul  {
+    padding: 0px;
+    list-style-type: none;
+}
+.menu ul li {
+    padding: 7px 2px 3px;
+    cursor: pointer;
+}
+.content {
+    top: 40px;
+}
+#navigation {
+    height: 40px;
+}
+#navigation ul{
+    list-style-type: none;
+}
+#menu_0{
+    width: 50px;
+    float: left;
+}
+#menu_0 ul {
+    margin: 0px;;
+}
+#menu_1 {
+    position: absolute;
+}
+#menu_1 ul {
+    margin: 0px;
+}
+#menu_order_0{
+    width: 50px;
+    float: right;
+}
+#menu_order_0 ul {
+    margin: 0px;;
+}
+#menu_order_1 {
+    right: 6px;
+    position: absolute;
+}
+#menu_order_1 ul {
+    margin: 0px;
 }

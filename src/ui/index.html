@@ -4,86 +4,49 @@
     <title>SPi/Home</title>
     <meta name="viewport" content="width=device-width,user-scalable=yes">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <link rel="icon" type="image/ico" href="/img/favicon.ico"/>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/mobile.css" />
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" media="screen, handheld" type="text/css" href="/css/mobile.css" />
+    <link rel="stylesheet" media="screen, handheld" type="text/css" href="/css/dark.css" />
   </head>
   <body>
-    <!-- Login page -->
-    <div data-role="page" id="login">
-      <div data-role="header">
-        <h1>S&Pi;/Home</h1>
-      </div>
-      <div data-role="main" class="ui-content">
-        <h2>Login</h2>
-        <label for="txt-password">Password</label>
-        <input type="password" name="txt-password" id="txt-password" value="" class="required" required/>
-        <button data-role='button' name='btnLogin' id='btnLogin' onclick="sPh.login();">Login</button>
-      </div>
-
-      <div data-role="popup" id="dlg-invalid-password" data-overlay-theme="a" data-theme="a" data-dismissible="false">
-        <div role="main" class="ui-content">
-            <h2>Login Failed</h2>
-            <a href="#login" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-alert'>Ok</a>
+    <div id="navigation">
+        <div id="menu_0" class="menu menu_left" onclick="sPh.toggleVisibility('menu_1');">
+            <ul>
+                <li>Menu</li>
+            </ul>
+        </div>
+        <div id="menu_order_0" class="menu menu_right hidden" onclick="sPh.toggleVisibility('menu_order_1');">
+            <ul>
+                <li>Sort</li>
+            </ul>
         </div>
     </div>
+    
+    <!-- main menu -->        
+    <div id="menu_1" class="menu menu_left hidden">
+        <ul>
+            <li onclick="sPh.renderSensors();">Sensors</li>
+            <li onclick="sPh.renderActors();">Actors</li>
+        </ul>
     </div>
-  
-    <!-- Menu page -->
-    <div data-role="page" id="menu">
-      <div data-role="header">
-        <h1>S&Pi;/Home</h1>
-        <a href="#options" data-rel="dialog" data-transition="slidedown" class='ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-gear ui-btn-icon-notext' name='btnOptions' id='btnOptions'>Options</a>
-      </div>
-      <div data-role="main" class="ui-content">
-        <!-- Buttons will be inserted by config.js -->
-      </div>
+    
+    <!-- order menu -->
+    <div id="menu_order_1" class="menu menu_right hidden">
+        <ul>
+            <li>Sort by Location</li>
+            <li>Sort by Measure</li>
+        </ul>
     </div>
-
-    <!-- Options page -->
-    <div data-role="page" id="options" data-overlay-theme="a" data-theme="a">
-      <div data-role="header">
-        <h1>Options</h1>
-      </div>
-      <div data-role="main" class="ui-content">
-        <button class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-refresh' name='btnRefresh' id='btnRefreshMenu' onclick="sPh.readConfig();">Refresh menu</button>
-        
-        <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-theme="a" data-content-theme="a">
-                <legend>Choose a style:</legend>         
-                <label for="theme-a">Light Theme</label>
-                <input type="radio" name="active-theme" id="theme-a" value='a' checked="checked" />
-                
-                <label for="theme-b">Dark Theme</label>
-                <input type="radio" name="active-theme" id="theme-b" value='b' />
-            </fieldset>
-        </div>
-        
-        <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-theme="a" data-content-theme="a">
-                <legend>Set active log level:</legend>
-                <label for="logLevelNone">None</label>
-                <input type="radio" name="active-log-level" id="logLevelNone" value="" />
-                
-                <label for="logLevelError">Errors</label>
-                <input type="radio" name="active-log-level" id="logLevelError" value="" />
-                                
-                <label for="logLevelWarning">Warnings</label>
-                <input type="radio" name="active-log-level" id="logLevelWarning" value="" />
-                                
-                <label for="logLevelDebug">Debug</label>
-                <input type="radio" name="active-log-level" id="logLevelDebug" value="" checked="checked" />
-            </fieldset>
-        </div>
-      </div>
-      <div data-role="footer">
-        <a href="#menu" data-rel="back" class='ui-btn ui-corner-all ui-btn-icon-left ui-icon-back'>Close</a>
-      </div>
+    
+    <!-- content -->
+    <div class="content" id="content">
+        asd
     </div>
-
-    <!-- Pages will be inserted by config.js -->
+    
+    <script language="javascript" type="text/javascript">
+    
+    </script>
     <script src="/js/spi.js"></script>
   </body>
 </html>

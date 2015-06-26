@@ -1,0 +1,25 @@
+body {  
+    background-color: #141414;
+    color: #eee;
+}
+#navigation {
+    background-color: #505050;
+}
+.menu {
+    background-color: #505050;
+    border: 1px solid #000;
+    border-radius: 2px;
+}
+.menu ul li:nth-child(odd) {
+    background-color: #606060;
+}
+.menu ul li:nth-child(even) {
+    background-color: #707070;
+}
+.menu ul li:hover {
+    background-color: #a0a0a0;
+    color: #eef;
+}
+.content {
+    border: 2px solid #f00;
+}
