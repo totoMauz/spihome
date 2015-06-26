@@ -1,5 +1,6 @@
-body {
-    font-size: 16px;
+body{
+    height: 100%
+    font-size: 18px;
     font-family: sans-serif;
 }
 .small {
@@ -19,20 +20,24 @@ body {
     list-style-type: none;
 }
 .menu ul li {
-    padding: 7px 2px 3px;
+    padding: 7px 4px 3px;
     cursor: pointer;
 }
 .content {
     top: 40px;
+    min-height: 50px;
+}
+.content ul {
+    padding: 0px;
 }
 #navigation {
-    height: 40px;
+    height: 35px;
 }
 #navigation ul{
     list-style-type: none;
 }
 #menu_0{
-    width: 50px;
+    width: 60px;
     float: left;
 }
 #menu_0 ul {
@@ -45,7 +50,7 @@ body {
     margin: 0px;
 }
 #menu_order_0{
-    width: 50px;
+    width: 60px;
     float: right;
 }
 #menu_order_0 ul {

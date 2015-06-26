@@ -18,7 +18,7 @@
         </div>
         <div id="menu_order_0" class="menu menu_right hidden" onclick="sPh.toggleVisibility('menu_order_1');">
             <ul>
-                <li>Sort</li>
+                <li>Sort by</li>
             </ul>
         </div>
     </div>
@@ -34,14 +34,14 @@
     <!-- order menu -->
     <div id="menu_order_1" class="menu menu_right hidden">
         <ul>
-            <li>Sort by Location</li>
-            <li>Sort by Measure</li>
+            <li onclick="sPh.setSortProperty(sPh.sortProperty.NAME);sPh.renderActors();sPh.hideElements('menu_order_1');">Name</li>
+            <li onclick="sPh.setSortProperty(sPh.sortProperty.LOCATION);sPh.renderActors();sPh.hideElements('menu_order_1');">Location</li>
         </ul>
     </div>
     
     <!-- content -->
-    <div class="content" id="content">
-        asd
+    <div class="content" id="content" onclick="sPh.hideElements('menu_1', 'menu_order_1');">
+        <!-- empty -->
     </div>
     
     <script language="javascript" type="text/javascript">

@@ -1,10 +1,51 @@
 (function (sPh, undefined) {
     "use strict";
+
+    //helper
+    function dynamicSort(property) {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a, b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        };
+    }
+
+    Object.defineProperty(Array.prototype, "sortBy", {
+        enumerable: false,
+        writable: true,
+        value: function () {
+            return this.sort(dynamicSort.apply(null, arguments));
+        }
+    });
+    
+    //enums
+    sPh.sortProperty = Object.freeze({
+        NAME: {value: 1, name: "name"},
+        LOCATION: {value: 2, name: "location"},
+        TYPE: {value: 3 , name: "type"}
+    });
+    
+    sPh.logLevel = Object.freeze({
+        NONE: {value: 1, name: "none"},
+        ERROR: {value: 2, name: "error"},
+        WARNING: {value: 3 , name: "warning"},
+        DEBUG: {value: 4, name: "debug"}
+    });
     
     //private variables
-    var oDomElements = {};
-    var sCssClassHidden = 'hidden';
+    var oDomElements = {},
+        sCssClassHidden = 'hidden',
+        bSortAscending = true,
+        oActiveSortProperty = sPh.sortProperty.NAME;
     
+    //public variables    
+    sPh.activeLogLevel = sPh.logLevel.DEBUG;
+    
+    //public methods
     sPh.getElementById = function(sId) {
         if(!oDomElements[sId]) {
             oDomElements[sId] = document.getElementById(sId);
@@ -16,8 +57,11 @@
         sPh.getElementById(sId).classList.toggle(sCssClassHidden);
     };
     
-    sPh.hideElement = function(sId) {
-        sPh.getElementById(sId).classList.add(sCssClassHidden);
+    sPh.hideElements = function() {
+        var idx;
+        for(idx = 0; idx < arguments.length; idx++) {
+            sPh.getElementById(arguments[idx]).classList.add(sCssClassHidden);
+        };
     };
     
     sPh.showElement = function(sId) {
@@ -26,30 +70,6 @@
     
     sPh.clearContent = function() {
         sPh.getElementById('content').innerHTML = "";
-    };
-
-    sPh.lookupLogLevel = function(level) {
-        if(isNaN(level) === false) {
-            //convert to real number
-            level = ~~level;
-        }
-        switch(level) {
-        case sPh.logLevel.NONE.name:
-        case sPh.logLevel.NONE.value:
-            return sPh.logLevel.NONE;
-            
-        case sPh.logLevel.ERROR.name:
-        case sPh.logLevel.ERROR.value:
-            return sPh.logLevel.ERROR;
-
-        case sPh.logLevel.WARNING.name:
-        case sPh.logLevel.WARNING.value:
-            return sPh.logLevel.WARNING;
-
-        case sPh.logLevel.DEBUG.name:
-        case sPh.logLevel.DEBUG.value:
-            return sPh.logLevel.DEBUG;
-        }
     };
 
     sPh.log = function(iLevel, sMessage) {
@@ -70,14 +90,15 @@
         }
     };
     
-    sPh.logLevel = Object.freeze({
-        NONE: {value: 1, name: "none"},
-        ERROR: {value: 2, name: "error"},
-        WARNING: {value: 3 , name: "warning"},
-        DEBUG: {value: 4, name: "debug"}
-    });
-    sPh.activeLogLevel = sPh.logLevel.DEBUG;
-
+    sPh.setSortProperty = function(oSortProperty) {
+        if(oActiveSortProperty == oSortProperty) {
+            bSortAscending = !bSortAscending;
+        } else {
+            bSortAscending = true;
+            oActiveSortProperty = oSortProperty;
+        }
+    };
+    
     sPh.error = function(sMessage) {
         sPh.log(sPh.logLevel.ERROR.value, sMessage);
     };
@@ -100,13 +121,30 @@
     };
     
     sPh.renderActors = function() {
-        var oActors = this.fetchActors();
-        if(!oActors) {
+        var oContent,
+            oList,
+            oListItem,
+            aActors = this.fetchActors();
+            
+        if(!aActors) {
             this.error("No actors returned from backend");
             return;
         }
+        
+        //add - to indicate descending
+        aActors.sortBy( ((bSortAscending) ? '' : '-') + oActiveSortProperty.name);
+        
         this.showElement('menu_order_0');
+        this.hideElements('menu_1');
         this.clearContent();
+        
+        oList = document.createElement('ul');        
+        aActors.forEach(function(oActor) {
+            oListItem = document.createElement('li');
+            oListItem.appendChild(document.createTextNode(oActor.name + ": " + oActor.type + ": " +  oActor.location));
+            oList.appendChild(oListItem);
+        });
+        this.getElementById('content').appendChild(oList);
     };
     
     sPh.fetchSensors = function() {
@@ -115,8 +153,9 @@
     
     sPh.fetchActors = function() {
         //TODO query rest service
-        return {
-              "a1":{
+        return [
+                {
+                 "name": "a1",
                  "location":"Wohnzimmer (Fenster)",
                  "type":"window-drive",
                  "current_state":{
@@ -135,7 +174,8 @@
                     }
                  ]
               },
-              "a2":{
+              {
+                 "name": "a2",
                  "location":"Werkstatt (Fenster)",
                  "type":"window-drive",
                  "current_state":{
@@ -154,6 +194,6 @@
                     }
                  ]
               }
-            };
+            ];
     };  
 }(window.sPh = window.sPh || {}));
