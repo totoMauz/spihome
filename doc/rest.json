@@ -1,0 +1,223 @@
+{
+	sensors : [
+		{
+			location : "Wohnzimmer",
+			measure : "temperature",
+			current_value : 22.7387666
+		},
+		{
+			location : "Werkstatt",
+			measure : "temperature",
+			current_value : 29.44
+		},
+		{
+			location : "Bad",
+			measure : "temperature",
+			current_value : 22.1
+		},
+		{
+			location : "Balkon",
+			measure : "temperature",
+			current_value : 20.7
+		},
+		{
+			location : "Wohnzimmer",
+			measure : "humidity",
+			current_value : 30.12
+		},
+		{
+			location : "Werkstatt",
+			measure : "humidity",
+			current_value : 40.22
+		},
+		{
+			location : "Bad",
+			measure : "humidity",
+			current_value : 55.999999
+		},
+		{
+			location : "Balkon",
+			measure : "humidity",
+			current_value : 45.77
+		},
+		{
+			location : "HK-Zulauf-Wohnzimmer",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Ablauf-Wohnzimmer",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Zulauf-Werkstatt",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Ablauf-Werkstatt",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Zulauf-Bad",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "FBH-Zulauf-Bad",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Ablauf-Bad",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Zulauf-Wohnzimmer",
+			measure : "temperature",
+			current_value : 20.1
+		},
+		{
+			location : "HK-Ablauf-Wohnzimmer",
+			measure : "temperature",
+			current_value : 20.1
+		}
+	],
+	actors : [
+		{
+			location : "Wohnzimmer (Fenster)",
+			type : "window-drive",
+			current_state : { value : 1, text : "open", by_module : "climate" },
+			configureable_states : [ { value : 1, text : "open" }, { value : 0, text : "closed" } ]
+		},
+		{
+			location : "Werkstatt (Fenster)",
+			type : "window-drive",
+			current_state : { value : 1, text : "open", by_module : "climate" },
+			configureable_states : [ { value : 1, text : "open" }, { value : 0, text : "closed" } ]
+		},
+		{
+			location : "Bad (Fenster)",
+			type : "window-drive",
+			current_state : { value : 1, text : "open", by_module : "climate" },
+			configureable_states : [ { value : 1, text : "open" }, { value : 0, text : "closed" } ]
+		},
+		{
+			location : "Küche (Fenster)",
+			type : "window-drive",
+			current_state : { value : 1, text : "open", by_module : "climate" },
+			configureable_states : [ { value : 1, text : "open" }, { value : 0, text : "closed" } ]
+		},
+
+		{
+			location : "Wohnzimmer (Fenster)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Wohnzimmer (Tür)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Werkstatt (Fenster)",
+			type : "window-shutter",
+			current_state : { value : 1, text : "closed", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Werkstatt (Tür)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Bad (Fenster)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Küche (Fenster links)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+		{
+			location : "Küche (Fenster rechts)",
+			type : "window-shutter",
+			current_state : { value : 0, text : "open", by_module : "timer" },
+			configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
+		},
+
+		{
+			location : "HK-Zulauf-Wohnzimmer",
+			type : "valve",
+			current_state : { value : 0, text : "closed", by_module : null },
+			configureable_states : [ { value : 0, text : "closed" }, { value : 1, text : "open" } ]
+		},
+		{
+			location : "FBH-Zulauf-Bad",
+			type : "valve",
+			current_state : { value : 0, text : "closed", by_module : null },
+			configureable_states : [ { value : 0, text : "closed" }, { value : 1, text : "open" } ]
+		},
+		{
+			location : "HK-Zulauf-Bad",
+			type : "valve",
+			current_state : { value : 0, text : "closed", by_module : null },
+			configureable_states : [ { value : 0, text : "closed" }, { value : 1, text : "open" } ]
+		},
+		{
+			location : "HK-Zulauf-Werkstatt",
+			type : "valve",
+			current_state : { value : 0, text : "closed", by_module : null },
+			configureable_states : [ { value : 0, text : "closed" }, { value : 1, text : "open" } ]
+		},
+		{
+			location : "HK-Zulauf-Küche",
+			type : "valve",
+			current_state : { value : 0, text : "closed", by_module : null },
+			configureable_states : [ { value : 0, text : "closed" }, { value : 1, text : "open" } ]
+		}
+	],
+	modules : [
+		{
+			name : "timer"
+			/* ... */
+		},
+		{
+			name : "climate"
+			/* ... */
+		},
+		{
+			name : "rainwatch"
+			/* ... */
+		}
+	],
+	locations : [
+		{
+			name : "Wohnzimmer"
+			/* ... */
+		},
+		{
+			name : "Werkstatt"
+			/* ... */
+		},
+		{
+			name : "Küche"
+			/* ... */
+		},
+		{
+			name : "Bad"
+			/* ... */
+		}
+		/* ... */
+	]
+	/* ... */
+}
