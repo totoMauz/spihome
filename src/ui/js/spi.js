@@ -105,7 +105,7 @@
             }
         }
     };
-    
+
     /**
      * Create a html element for Sensors
      * @param {Object} oSensor the Sensor to represent
@@ -132,11 +132,11 @@
         oSensorLocation.classList.add(sCssClassLocation);
         oSensorLocation.innerHTML = oSensor.location;
         oSensorDiv.appendChild(oSensorLocation);
-        
+
         return oSensorDiv;
     };
-    
-    
+
+
     /**
      * Create a html element for Actors
      * @param {Object} oActor the Actor to represent
@@ -163,7 +163,7 @@
         oActorLocation.classList.add(sCssClassLocation);
         oActorLocation.innerHTML = oActor.location;
         oActorDiv.appendChild(oActorLocation);
-        
+
         return oActorDiv;
     };
 
@@ -290,6 +290,7 @@
             this.removeClass(sCssClassAscending, sElementId);
             this.addClass(sCssClassDescending, sElementId);
         }
+        this.rerender();
     };
 
     /**
@@ -334,7 +335,9 @@
             return;
         }
 
-        //add - to indicate descending
+        if(oActiveSortProperty === sPh.sortProperty.TYPE) {
+            this.setSortProperty(sPh.sortProperty.NAME);
+        }
         aSensors.sortBy( ((bSortAscending) ? '' : '-') + oActiveSortProperty.name);
 
         this.showElements(sIdMenuOrder0, sIdSortByMeasure);
@@ -359,7 +362,9 @@
             return;
         }
 
-        //add - to indicate descending
+        if(oActiveSortProperty === sPh.sortProperty.MEASURE) {
+            this.setSortProperty(sPh.sortProperty.NAME);
+        }
         aActors.sortBy( ((bSortAscending) ? '' : '-') + oActiveSortProperty.name);
 
         this.showElements(sIdMenuOrder0, sIdSortByType);

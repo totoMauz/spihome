@@ -11,12 +11,12 @@
   </head>
   <body>
     <header id="navigation">
-        <div id="menu_0" class="menu" onclick="sPh.toggleVisibility('menu_1');">
+        <div id="menu_0" class="menu" onclick="window.sPh.toggleVisibility('menu_1');">
             <ul>
                 <li>&#9776; Menu</li>
             </ul>
         </div>
-        <div id="menu_order_0" class="menu hidden" onclick="sPh.toggleVisibility('menu_order_1');">
+        <div id="menu_order_0" class="menu hidden" onclick="window.sPh.toggleVisibility('menu_order_1');">
             <ul>
                 <li>Sort by</li>
             </ul>
@@ -26,25 +26,25 @@
     <!-- main menu -->
     <div id="menu_1" class="menu menu_left hidden">
         <ul>
-            <li onclick="sPh.renderSensors();">Sensors</li>
-            <li onclick="sPh.renderActors();">Actors</li>
+            <li onclick="window.sPh.renderSensors();">Sensors</li>
+            <li onclick="window.sPh.renderActors();">Actors</li>
         </ul>
     </div>
 
     <!-- order menu -->
     <div id="menu_order_1" class="menu hidden">
         <ul>
-            <li id="sortByName" class="ascending" onclick="sPh.setSortProperty(sPh.sortProperty.NAME);sPh.rerender();sPh.hideElements('menu_order_1');">Name</li>
-            <li id="sortByLocation" onclick="sPh.setSortProperty(sPh.sortProperty.LOCATION);sPh.rerender();sPh.hideElements('menu_order_1');">Location</li>
+            <li id="sortByName" class="ascending" onclick="window.sPh.setSortProperty(sPh.sortProperty.NAME);window.sPh.hideElements('menu_order_1');">Name</li>
+            <li id="sortByLocation" onclick="window.sPh.setSortProperty(sPh.sortProperty.LOCATION);window.sPh.hideElements('menu_order_1');">Location</li>
             <!-- only for sensors -->
-            <li id="sortByMeasure" onclick="sPh.setSortProperty(sPh.sortProperty.MEASURE);sPh.rerender();sPh.hideElements('menu_order_1');">Measure</li>
+            <li id="sortByMeasure" onclick="window.sPh.setSortProperty(sPh.sortProperty.MEASURE);window.sPh.hideElements('menu_order_1');">Measure</li>
             <!-- only for actors -->
-            <li id="sortByType" onclick="sPh.setSortProperty(sPh.sortProperty.TYPE);sPh.rerender();sPh.hideElements('menu_order_1');">Type</li>
+            <li id="sortByType" onclick="window.sPh.setSortProperty(sPh.sortProperty.TYPE);window.sPh.hideElements('menu_order_1');">Type</li>
         </ul>
     </div>
     
     <!-- content -->
-    <section class="content" id="content" onclick="sPh.hideElements('menu_1', 'menu_order_1');">
+    <section class="content" id="content" onclick="window.sPh.hideElements('menu_1', 'menu_order_1');">
     <!-- empty -->
     </section> 
     
