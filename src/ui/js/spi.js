@@ -260,21 +260,25 @@
         switch (oActiveSortProperty) {
         case sPh.sortProperty.NAME:
             sElementId = sIdSortByName;
+            this.removeClass(sCssClassAscending, sIdSortByLocation, sIdSortByMeasure, sIdSortByType);
             this.removeClass(sCssClassDescending, sIdSortByLocation, sIdSortByMeasure, sIdSortByType);
             break;
 
         case sPh.sortProperty.LOCATION:
             sElementId = sIdSortByLocation;
+            this.removeClass(sCssClassAscending, sIdSortByName, sIdSortByMeasure, sIdSortByType);
             this.removeClass(sCssClassDescending, sIdSortByName, sIdSortByMeasure, sIdSortByType);
             break;
 
         case sPh.sortProperty.TYPE:
             sElementId = sIdSortByType;
+            this.removeClass(sCssClassAscending, sIdSortByLocation, sIdSortByMeasure, sIdSortByName);
             this.removeClass(sCssClassDescending, sIdSortByLocation, sIdSortByMeasure, sIdSortByName);
             break;
 
         case sPh.sortProperty.MEASURE:
             sElementId = sIdSortByMeasure;
+            this.removeClass(sCssClassAscending, sIdSortByLocation, sIdSortByName, sIdSortByType);
             this.removeClass(sCssClassDescending, sIdSortByLocation, sIdSortByName, sIdSortByType);
             break;
         }
