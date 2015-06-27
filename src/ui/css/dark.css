@@ -2,13 +2,9 @@ body {
     background-color: #141414;
     color: #eee;
 }
-#navigation {
-    background-color: #505050;
-}
 .menu {
     background-color: #505050;
-    border: 1px solid #000;
-    border-radius: 2px;
+    border-color: #000;
 }
 .menu ul li:nth-child(odd) {
     background-color: #606060;
@@ -21,5 +17,26 @@ body {
     color: #eef;
 }
 .content {
-    border: 2px solid #f00;
+    border-color: #000;
+}
+.thing {
+    border-color: #000;
+}
+#content div:nth-child(odd) {
+    background-color: #606060;
+}
+#content div:nth-child(even) {
+    background-color: #707070;
+}
+#content div:hover {
+    background-color: #a0a0a0;
+    color: #eef;
+}
+#navigation {
+    background-color: #505050;
+    border-color: #000;
+}
+#footer {
+    background-color: #505050;
+    border-color: #000;
 }

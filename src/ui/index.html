@@ -10,43 +10,47 @@
     <link rel="stylesheet" media="screen, handheld" type="text/css" href="/css/dark.css" />
   </head>
   <body>
-    <div id="navigation">
-        <div id="menu_0" class="menu menu_left" onclick="sPh.toggleVisibility('menu_1');">
+    <header id="navigation">
+        <div id="menu_0" class="menu" onclick="sPh.toggleVisibility('menu_1');">
             <ul>
-                <li>Menu</li>
+                <li>&#9776; Menu</li>
             </ul>
         </div>
-        <div id="menu_order_0" class="menu menu_right hidden" onclick="sPh.toggleVisibility('menu_order_1');">
+        <div id="menu_order_0" class="menu hidden" onclick="sPh.toggleVisibility('menu_order_1');">
             <ul>
                 <li>Sort by</li>
             </ul>
         </div>
-    </div>
-    
-    <!-- main menu -->        
+    </header>
+
+    <!-- main menu -->
     <div id="menu_1" class="menu menu_left hidden">
         <ul>
             <li onclick="sPh.renderSensors();">Sensors</li>
             <li onclick="sPh.renderActors();">Actors</li>
         </ul>
     </div>
-    
+
     <!-- order menu -->
-    <div id="menu_order_1" class="menu menu_right hidden">
+    <div id="menu_order_1" class="menu hidden">
         <ul>
-            <li onclick="sPh.setSortProperty(sPh.sortProperty.NAME);sPh.renderActors();sPh.hideElements('menu_order_1');">Name</li>
-            <li onclick="sPh.setSortProperty(sPh.sortProperty.LOCATION);sPh.renderActors();sPh.hideElements('menu_order_1');">Location</li>
+            <li id="sortByName" class="ascending" onclick="sPh.setSortProperty(sPh.sortProperty.NAME);sPh.rerender();sPh.hideElements('menu_order_1');">Name</li>
+            <li id="sortByLocation" onclick="sPh.setSortProperty(sPh.sortProperty.LOCATION);sPh.rerender();sPh.hideElements('menu_order_1');">Location</li>
+            <!-- only for sensors -->
+            <li id="sortByMeasure" onclick="sPh.setSortProperty(sPh.sortProperty.MEASURE);sPh.rerender();sPh.hideElements('menu_order_1');">Measure</li>
+            <!-- only for actors -->
+            <li id="sortByType" onclick="sPh.setSortProperty(sPh.sortProperty.TYPE);sPh.rerender();sPh.hideElements('menu_order_1');">Type</li>
         </ul>
     </div>
     
     <!-- content -->
-    <div class="content" id="content" onclick="sPh.hideElements('menu_1', 'menu_order_1');">
-        <!-- empty -->
-    </div>
+    <section class="content" id="content" onclick="sPh.hideElements('menu_1', 'menu_order_1');">
+    <!-- empty -->
+    </section> 
     
-    <script language="javascript" type="text/javascript">
-    
-    </script>
     <script src="/js/spi.js"></script>
-  </body>
+    <footer id="footer" class="small">
+        SPi/Home <a href="https://github.com/totoMauz/spihome">GitHub</a>
+    </footer>
+    </body>
 </html>
