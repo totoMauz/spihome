@@ -45,6 +45,10 @@ a:hover {
     background-color: #505050;
     border-color: #000;
 }
+#navigation  div{
+    background-color: #606060;
+    border-color: #000;
+}
 #footer {
     background-color: #505050;
     border-color: #000;

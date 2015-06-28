@@ -378,7 +378,7 @@
      * Fetches all actors from the backend and renders them as list
      */
     sPh.renderActors = function () {
-        fRenderThings(sActionSensor);
+        fRenderThings(sActionActor);
         sLastAction = sActionActor;
     };
 
