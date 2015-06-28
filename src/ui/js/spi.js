@@ -79,7 +79,8 @@
         sActionSensor = "sensors",
         fLog,
         fCreateSensor,
-        fCreateActor;
+        fCreateActor,
+        fRenderThings;
 
     //private methods
     /**
@@ -88,17 +89,17 @@
      * @param {String} sMessage the message tow rite
      */
     fLog = function (iLevel, sMessage) {
-        if (sPh.activeLogLevel.value >= iLevel) {
+        if (window.sPh.activeLogLevel.value >= iLevel) {
             switch (iLevel) {
-            case sPh.logLevel.ERROR.value:
+            case window.sPh.logLevel.ERROR.value:
                 console.error(sMessage);
                 break;
 
-            case sPh.logLevel.WARNING.value:
+            case window.sPh.logLevel.WARNING.value:
                 console.warn(sMessage);
                 break;
 
-            case sPh.logLevel.DEBUG.value:
+            case window.sPh.logLevel.DEBUG.value:
                 console.debug(sMessage);
                 break;
             }
@@ -135,7 +136,6 @@
         return oSensorDiv;
     };
 
-
     /**
      * Create a html element for Actors
      * @param {Object} oActor the Actor to represent
@@ -166,6 +166,48 @@
         return oActorDiv;
     };
 
+    /**
+     * Render Sensors or Actors
+     * @param {String} sAction controls whether to render Sensors or Actors
+     */
+    fRenderThings = function (sAction) {
+        var aThings,
+            oContent,
+            oFooter;
+            
+        switch (sAction) {
+        case sActionActor:
+            aThings = window.sPh.fetchActors();
+            if (oActiveSortProperty === window.sPh.sortProperty.MEASURE) {
+                window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
+            }
+            break;
+            
+        case sActionSensor:
+            aThings = window.sPh.fetchSensors();        
+            if (oActiveSortProperty === window.sPh.sortProperty.TYPE) {
+                window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
+            }
+            break;
+        }
+        
+        aThings.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
+        
+        window.sPh.showElements(sIdMenuOrder0, sIdSortByMeasure);
+        window.sPh.hideElements(sIdMenu1, sIdSortByType);
+        oContent = window.sPh.getElementById(sIdContent);
+        window.document.body.removeChild(oContent);
+        window.sPh.clearContent();
+
+        aThings.forEach(function (oThing) {
+            var oThingElement = fCreateSensor(oThing);
+            oContent.appendChild(oThingElement);
+        });
+
+        oFooter = window.sPh.getElementById(sIdFooter);
+        window.document.body.insertBefore(oContent, oFooter);
+    };
+    
     //public variables
     sPh.activeLogLevel = sPh.logLevel.DEBUG;
 
@@ -323,38 +365,12 @@
     sPh.info = function (sMessage) {
         fLog(sPh.logLevel.INFO.value, sMessage);
     };
-
+    
     /**
      * Fetches all sensors from the backend and renders them as list
      */
     sPh.renderSensors = function () {
-        var aSensors = this.fetchSensors(),
-            oContent,
-            oFooter;
-
-        if (!aSensors) {
-            this.error("No sensors returned from backend");
-            return;
-        }
-
-        if (oActiveSortProperty === sPh.sortProperty.TYPE) {
-            this.setSortProperty(sPh.sortProperty.NAME);
-        }
-        aSensors.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
-
-        this.showElements(sIdMenuOrder0, sIdSortByMeasure);
-        this.hideElements(sIdMenu1, sIdSortByType);
-        oContent = this.getElementById(sIdContent);
-        window.document.body.removeChild(oContent);
-        this.clearContent();
-
-        aSensors.forEach(function (oSensor) {
-            var oSensorElement = fCreateSensor(oSensor);
-            oContent.appendChild(oSensorElement);
-        });
-
-        oFooter = this.getElementById(sIdFooter);
-        window.document.body.insertBefore(oContent, oFooter);
+        fRenderThings(sActionSensor);
         sLastAction = sActionSensor;
     };
 
@@ -362,33 +378,7 @@
      * Fetches all actors from the backend and renders them as list
      */
     sPh.renderActors = function () {
-        var aActors = this.fetchActors(),
-            oContent,
-            oFooter;
-
-        if (!aActors) {
-            this.error("No actors returned from backend");
-            return;
-        }
-
-        if (oActiveSortProperty === sPh.sortProperty.MEASURE) {
-            this.setSortProperty(sPh.sortProperty.NAME);
-        }
-        aActors.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
-
-        this.showElements(sIdMenuOrder0, sIdSortByType);
-        this.hideElements(sIdMenu1, sIdSortByMeasure);
-        oContent = this.getElementById(sIdContent);
-        window.document.body.removeChild(oContent);
-        this.clearContent();
-
-        aActors.forEach(function (oActor) {
-            var oActorElement = fCreateActor(oActor);
-            oContent.appendChild(oActorElement);
-        });
-
-        oFooter = this.getElementById(sIdFooter);
-        window.document.body.insertBefore(oContent, oFooter);
+        fRenderThings(sActionSensor);
         sLastAction = sActionActor;
     };
 
