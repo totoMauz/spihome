@@ -1,6 +1,6 @@
 body{
-    height: 100%
-    font-size: 18px;
+    height: 100%;
+    font-size: 16px;
     font-family: sans-serif;
 }
 .small {
@@ -33,10 +33,6 @@ body{
     top: 40px;
     min-height: 50px;
     border: 2px solid;
-}
-.content ul {
-    padding: 0px;
-    border-radius: 2px;
 }
 .thing {
     padding: 7px 4px 3px;
@@ -75,9 +71,6 @@ body{
     text-align: center;
     border: 1px solid;
     border-radius: 2px;
-}
-#navigation ul{
-    list-style-type: none;
 }
 #menu_0{
     width: 70px;

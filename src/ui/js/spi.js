@@ -73,8 +73,6 @@
         sIdSortByType = "sortByType",
         sIdSortByName = "sortByName",
         sIdSortByLocation = "sortByLocation",
-        sHtmlUl = "ul",
-        sHtmlLi = "li",
         sHtmlSpan = "span",
         sHtmlDiv = "div",
         sActionActor = "actors",
@@ -112,7 +110,7 @@
      * @param {Object} oSensor the Sensor to represent
      * @return {Object} a DOM object
      */
-    fCreateSensor = function(oSensor) {
+    fCreateSensor = function (oSensor) {
         var oSensorName,
             oSensorMeasure,
             oSensorLocation,
@@ -143,7 +141,7 @@
      * @param {Object} oActor the Actor to represent
      * @return {Object} a DOM object
      */
-    fCreateActor = function(oActor) {
+    fCreateActor = function (oActor) {
         var oActorName,
             oActorType,
             oActorLocation,
@@ -333,16 +331,16 @@
         var aSensors = this.fetchSensors(),
             oContent,
             oFooter;
-            
+
         if (!aSensors) {
             this.error("No sensors returned from backend");
             return;
         }
 
-        if(oActiveSortProperty === sPh.sortProperty.TYPE) {
+        if (oActiveSortProperty === sPh.sortProperty.TYPE) {
             this.setSortProperty(sPh.sortProperty.NAME);
         }
-        aSensors.sortBy( ((bSortAscending) ? '' : '-') + oActiveSortProperty.name);
+        aSensors.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
 
         this.showElements(sIdMenuOrder0, sIdSortByMeasure);
         this.hideElements(sIdMenu1, sIdSortByType);
@@ -354,7 +352,7 @@
             var oSensorElement = fCreateSensor(oSensor);
             oContent.appendChild(oSensorElement);
         });
-        
+
         oFooter = this.getElementById(sIdFooter);
         window.document.body.insertBefore(oContent, oFooter);
         sLastAction = sActionSensor;
@@ -373,10 +371,10 @@
             return;
         }
 
-        if(oActiveSortProperty === sPh.sortProperty.MEASURE) {
+        if (oActiveSortProperty === sPh.sortProperty.MEASURE) {
             this.setSortProperty(sPh.sortProperty.NAME);
         }
-        aActors.sortBy( ((bSortAscending) ? '' : '-') + oActiveSortProperty.name);
+        aActors.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
 
         this.showElements(sIdMenuOrder0, sIdSortByType);
         this.hideElements(sIdMenu1, sIdSortByMeasure);
@@ -388,7 +386,7 @@
             var oActorElement = fCreateActor(oActor);
             oContent.appendChild(oActorElement);
         });
-        
+
         oFooter = this.getElementById(sIdFooter);
         window.document.body.insertBefore(oContent, oFooter);
         sLastAction = sActionActor;
@@ -471,7 +469,7 @@
     };
 }(window.sPh = window.sPh || {}));
 
-function fSort (evt) {
+function fSort(evt) {
     switch (evt.target.id) {
     case "sortByName":
         window.sPh.setSortProperty(sPh.sortProperty.NAME);
@@ -494,12 +492,12 @@ function fSort (evt) {
 }
 
 //Add event listener
-sPh.getElementById('sortByName').addEventListener("click", fSort, false);
-sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
-sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
-sPh.getElementById('sortByType').addEventListener("click", fSort, false);
-sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1');return false;}, false);
-sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1');return false;}, false);
-sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1');return false;}, false);
-sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors();return false;}, false);
-sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors();return false;}, false);
+window.sPh.getElementById('sortByName').addEventListener("click", fSort, false);
+window.sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
+window.sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
+window.sPh.getElementById('sortByType').addEventListener("click", fSort, false);
+window.sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1'); return false;}, false);
+window.sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1'); return false;}, false);
+window.sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
+window.sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors(); return false;}, false);
+window.sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors(); return false;}, false);

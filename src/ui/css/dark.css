@@ -2,6 +2,15 @@ body {
     background-color: #141414;
     color: #eee;
 }
+a:link {
+    color: #FF9900;
+}
+a:visited  {
+    color: #FF9966;
+}
+a:hover {
+    color: #FF9933;
+}
 .menu {
     background-color: #505050;
     border-color: #000;
