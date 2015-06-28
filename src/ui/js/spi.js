@@ -68,6 +68,7 @@
         sIdMenu1 = "menu_1",
         sIdMenuOrder0 = "menu_order_0",
         sIdContent = "content",
+        sIdFooter = "footer",
         sIdSortByMeasure = "sortByMeasure",
         sIdSortByType = "sortByType",
         sIdSortByName = "sortByName",
@@ -330,7 +331,9 @@
      */
     sPh.renderSensors = function () {
         var aSensors = this.fetchSensors(),
-            oContent;
+            oContent,
+            oFooter;
+            
         if (!aSensors) {
             this.error("No sensors returned from backend");
             return;
@@ -343,13 +346,17 @@
 
         this.showElements(sIdMenuOrder0, sIdSortByMeasure);
         this.hideElements(sIdMenu1, sIdSortByType);
-        this.clearContent();
         oContent = this.getElementById(sIdContent);
+        window.document.body.removeChild(oContent);
+        this.clearContent();
 
         aSensors.forEach(function (oSensor) {
             var oSensorElement = fCreateSensor(oSensor);
             oContent.appendChild(oSensorElement);
         });
+        
+        oFooter = this.getElementById(sIdFooter);
+        window.document.body.insertBefore(oContent, oFooter);
         sLastAction = sActionSensor;
     };
 
@@ -358,7 +365,8 @@
      */
     sPh.renderActors = function () {
         var aActors = this.fetchActors(),
-            oContent;
+            oContent,
+            oFooter;
 
         if (!aActors) {
             this.error("No actors returned from backend");
@@ -372,13 +380,17 @@
 
         this.showElements(sIdMenuOrder0, sIdSortByType);
         this.hideElements(sIdMenu1, sIdSortByMeasure);
-        this.clearContent();
         oContent = this.getElementById(sIdContent);
+        window.document.body.removeChild(oContent);
+        this.clearContent();
 
         aActors.forEach(function (oActor) {
             var oActorElement = fCreateActor(oActor);
             oContent.appendChild(oActorElement);
         });
+        
+        oFooter = this.getElementById(sIdFooter);
+        window.document.body.insertBefore(oContent, oFooter);
         sLastAction = sActionActor;
     };
 
