@@ -454,3 +454,35 @@
                 }];
     };
 }(window.sPh = window.sPh || {}));
+
+function fSort (evt) {
+    switch (evt.target.id) {
+    case "sortByName":
+        window.sPh.setSortProperty(sPh.sortProperty.NAME);
+        break;
+        
+    case "sortByLocation":
+        window.sPh.setSortProperty(sPh.sortProperty.LOCATION);
+        break;
+        
+    case "sortByMeasure":
+        window.sPh.setSortProperty(sPh.sortProperty.MEASURE);
+        break;
+        
+    case "sortByType":
+        window.sPh.setSortProperty(sPh.sortProperty.TYPE);
+        break;
+    }
+    window.sPh.hideElements('menu_order_1');
+}
+
+//Add event listener
+sPh.getElementById('sortByName').addEventListener("click", fSort, false);
+sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
+sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
+sPh.getElementById('sortByType').addEventListener("click", fSort, false);
+sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1');}, false);
+sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1');}, false);
+sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1');}, false);
+sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors();}, false);
+sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors();}, false);
