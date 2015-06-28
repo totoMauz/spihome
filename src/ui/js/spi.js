@@ -472,19 +472,19 @@
 function fSort(evt) {
     switch (evt.target.id) {
     case "sortByName":
-        window.sPh.setSortProperty(sPh.sortProperty.NAME);
+        window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
         break;
 
     case "sortByLocation":
-        window.sPh.setSortProperty(sPh.sortProperty.LOCATION);
+        window.sPh.setSortProperty(window.sPh.sortProperty.LOCATION);
         break;
 
     case "sortByMeasure":
-        window.sPh.setSortProperty(sPh.sortProperty.MEASURE);
+        window.sPh.setSortProperty(window.sPh.sortProperty.MEASURE);
         break;
 
     case "sortByType":
-        window.sPh.setSortProperty(sPh.sortProperty.TYPE);
+        window.sPh.setSortProperty(window.sPh.sortProperty.TYPE);
         break;
     }
     window.sPh.hideElements('menu_order_1');
@@ -496,8 +496,8 @@ window.sPh.getElementById('sortByName').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByType').addEventListener("click", fSort, false);
-window.sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1'); return false;}, false);
-window.sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1'); return false;}, false);
-window.sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
-window.sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors(); return false;}, false);
-window.sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors(); return false;}, false);
+window.sPh.getElementById('menu_0').addEventListener("click", function () {window.sPh.toggleVisibility('menu_1'); return false;}, false);
+window.sPh.getElementById('menu_order_0').addEventListener("click", function () {window.sPh.toggleVisibility('menu_order_1'); return false;}, false);
+window.sPh.getElementById('content').addEventListener("click", function () {window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
+window.sPh.getElementById('renderSensor').addEventListener("click", function () {window.sPh.renderSensors(); return false;}, false);
+window.sPh.getElementById('renderActor').addEventListener("click", function () {window.sPh.renderActors(); return false;}, false);
