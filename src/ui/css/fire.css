@@ -1,0 +1,55 @@
+body {  
+    background-color: #FF3333;
+    color: #fff
+}
+a:link {
+    color: #004;
+}
+a:visited  {
+    color: #228;
+}
+a:hover {
+    color: #228;
+}
+.menu {
+    background-color: #FF8800;
+    border-color: #FF9900;
+}
+.menu ul li:nth-child(odd) {
+    background-color: #FF9900;
+}
+.menu ul li:nth-child(even) {
+    background-color: #FFCC33;
+}
+.menu ul li:hover {
+    background-color: #FF9933;
+    color: #fff;
+}
+.content {
+    border-color: #FF9900;
+}
+.thing {
+    border-color: #FF9900;
+}
+#content div:nth-child(odd) {
+    background-color: #FF9900;
+}
+#content div:nth-child(even) {
+    background-color: #FFCC33;
+}
+#content div:hover {
+    background-color: #FF9933;
+    color: #fff;
+}
+#navigation {
+    background-color: #FF6600;
+    border-color: #f00;
+}
+#navigation  div{
+    background-color: #FF9900;
+    border-color: #f00;
+}
+#footer {
+    background-color: #FF6600;
+    border-color: #f00;
+}

@@ -174,7 +174,7 @@
         var aThings,
             oContent,
             oFooter;
-            
+
         switch (sAction) {
         case sActionActor:
             aThings = window.sPh.fetchActors();
@@ -182,17 +182,17 @@
                 window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
             }
             break;
-            
+
         case sActionSensor:
-            aThings = window.sPh.fetchSensors();        
+            aThings = window.sPh.fetchSensors();
             if (oActiveSortProperty === window.sPh.sortProperty.TYPE) {
                 window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
             }
             break;
         }
-        
+
         aThings.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
-        
+
         window.sPh.showElements(sIdMenuOrder0, sIdSortByMeasure);
         window.sPh.hideElements(sIdMenu1, sIdSortByType);
         oContent = window.sPh.getElementById(sIdContent);
@@ -207,11 +207,68 @@
         oFooter = window.sPh.getElementById(sIdFooter);
         window.document.body.insertBefore(oContent, oFooter);
     };
-    
+
     //public variables
     sPh.activeLogLevel = sPh.logLevel.DEBUG;
 
     //public methods
+    /**
+     * Render possible options
+     */
+    sPh.renderOptions = function () {
+        var oContent,
+            oOptions,
+            oFooter,
+            oStyleLegend,
+            oStyleSet,
+            oCssEntry,
+            oCssLabel;
+
+        oContent = window.sPh.getElementById(sIdContent);
+        window.document.body.removeChild(oContent);
+        window.sPh.clearContent();
+
+        oOptions = window.document.createElement(sHtmlDiv);
+
+        oStyleSet = window.document.createElement("fieldset");
+        oStyleLegend = window.document.createElement("legend");
+        oStyleLegend.innerHTML = "Styles";
+        oStyleSet.appendChild(oStyleLegend);
+
+        oCssEntry = window.document.createElement("input");
+        oCssEntry.setAttribute("id", "darkCss");
+        oCssEntry.setAttribute("type", "radio");
+        oCssEntry.setAttribute("value", "dark.css");
+        oCssEntry.setAttribute("name", "style");
+        oStyleSet.appendChild(oCssEntry);
+
+        oCssLabel = window.document.createElement("label");
+        oCssLabel.setAttribute("for", "darkCss");
+        oCssLabel.innerHTML = "Dark";
+        oStyleSet.appendChild(oCssLabel);
+
+        oStyleSet.appendChild(window.document.createElement("br"));
+
+        oCssEntry = window.document.createElement("input");
+        oCssEntry.setAttribute("id", "fireCss");
+        oCssEntry.setAttribute("type", "radio");
+        oCssEntry.setAttribute("value", "fire.css");
+        oCssEntry.setAttribute("name", "style");
+        oStyleSet.appendChild(oCssEntry);
+
+        oCssLabel = window.document.createElement("label");
+        oCssLabel.setAttribute("for", "fireCss");
+        oCssLabel.innerHTML = "Fire";
+        oStyleSet.appendChild(oCssLabel);
+
+        oStyleSet.addEventListener("change", this.switchCssFile, false);
+
+        oOptions.appendChild(oStyleSet);
+        oContent.appendChild(oOptions);
+        oFooter = window.sPh.getElementById(sIdFooter);
+        window.document.body.insertBefore(oContent, oFooter);
+    };
+
     /**
      * Get an element from the DOM
      * @param {String} sId the ID of the element
@@ -365,7 +422,7 @@
     sPh.info = function (sMessage) {
         fLog(sPh.logLevel.INFO.value, sMessage);
     };
-    
+
     /**
      * Fetches all sensors from the backend and renders them as list
      */
@@ -380,6 +437,16 @@
     sPh.renderActors = function () {
         fRenderThings(sActionActor);
         sLastAction = sActionActor;
+    };
+
+    sPh.switchCssFile = function (evt) {
+        var oOldCssFile = window.document.getElementsByTagName("link").item(2);
+        var oNewCssFile = document.createElement("link");
+        oNewCssFile.setAttribute("rel", "stylesheet");
+        oNewCssFile.setAttribute("type", "text/css");
+        oNewCssFile.setAttribute("href", "/css/" + evt.target.value);
+
+        document.getElementsByTagName("head").item(0).replaceChild(oNewCssFile, oOldCssFile);
     };
 
     /**
@@ -491,3 +558,4 @@ window.sPh.getElementById('menu_order_0').addEventListener("click", function () 
 window.sPh.getElementById('content').addEventListener("click", function () {window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
 window.sPh.getElementById('renderSensor').addEventListener("click", function () {window.sPh.renderSensors(); return false;}, false);
 window.sPh.getElementById('renderActor').addEventListener("click", function () {window.sPh.renderActors(); return false;}, false);
+window.sPh.getElementById('menu_options_0').addEventListener("click", function () {window.sPh.hideElements('menu_1', 'menu_order_1'); window.sPh.renderOptions(); return false;}, false);
