@@ -329,7 +329,8 @@
      * Fetches all sensors from the backend and renders them as list
      */
     sPh.renderSensors = function () {
-        var aSensors = this.fetchSensors();
+        var aSensors = this.fetchSensors(),
+            oContent;
         if (!aSensors) {
             this.error("No sensors returned from backend");
             return;
@@ -343,11 +344,12 @@
         this.showElements(sIdMenuOrder0, sIdSortByMeasure);
         this.hideElements(sIdMenu1, sIdSortByType);
         this.clearContent();
+        oContent = this.getElementById(sIdContent);
 
         aSensors.forEach(function (oSensor) {
             var oSensorElement = fCreateSensor(oSensor);
-            this.getElementById(sIdContent).appendChild(oSensorElement);
-        }, this);
+            oContent.appendChild(oSensorElement);
+        });
         sLastAction = sActionSensor;
     };
 
@@ -355,7 +357,8 @@
      * Fetches all actors from the backend and renders them as list
      */
     sPh.renderActors = function () {
-        var aActors = this.fetchActors();
+        var aActors = this.fetchActors(),
+            oContent;
 
         if (!aActors) {
             this.error("No actors returned from backend");
@@ -370,11 +373,12 @@
         this.showElements(sIdMenuOrder0, sIdSortByType);
         this.hideElements(sIdMenu1, sIdSortByMeasure);
         this.clearContent();
+        oContent = this.getElementById(sIdContent);
 
         aActors.forEach(function (oActor) {
             var oActorElement = fCreateActor(oActor);
-            this.getElementById(sIdContent).appendChild(oActorElement);
-        }, this);
+            oContent.appendChild(oActorElement);
+        });
         sLastAction = sActionActor;
     };
 
@@ -431,7 +435,7 @@
         return [{
                     ID: "a1",
                     name: "win k",
-                    location : "Küche (Fenster rechts)",
+                    location : "Küche (Fenster rechts unten die linke Ecke in der Mitte)",
                     type : "window-shutter",
                     current_state : { value : 0, text : "open", by_module : "timer" },
                     configureable_states : [ { value : 0, text : "open" }, { value : 1, text : "closed" } ]
@@ -460,20 +464,21 @@ function fSort (evt) {
     case "sortByName":
         window.sPh.setSortProperty(sPh.sortProperty.NAME);
         break;
-        
+
     case "sortByLocation":
         window.sPh.setSortProperty(sPh.sortProperty.LOCATION);
         break;
-        
+
     case "sortByMeasure":
         window.sPh.setSortProperty(sPh.sortProperty.MEASURE);
         break;
-        
+
     case "sortByType":
         window.sPh.setSortProperty(sPh.sortProperty.TYPE);
         break;
     }
     window.sPh.hideElements('menu_order_1');
+    return false;
 }
 
 //Add event listener
@@ -481,8 +486,8 @@ sPh.getElementById('sortByName').addEventListener("click", fSort, false);
 sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
 sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
 sPh.getElementById('sortByType').addEventListener("click", fSort, false);
-sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1');}, false);
-sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1');}, false);
-sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1');}, false);
-sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors();}, false);
-sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors();}, false);
+sPh.getElementById('menu_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_1');return false;}, false);
+sPh.getElementById('menu_order_0').addEventListener("click", function (evt) {window.sPh.toggleVisibility('menu_order_1');return false;}, false);
+sPh.getElementById('content').addEventListener("click", function (evt) {window.sPh.hideElements('menu_1', 'menu_order_1');return false;}, false);
+sPh.getElementById('renderSensor').addEventListener("click", function (evt) {window.sPh.renderSensors();return false;}, false);
+sPh.getElementById('renderActor').addEventListener("click", function (evt) {window.sPh.renderActors();return false;}, false);
