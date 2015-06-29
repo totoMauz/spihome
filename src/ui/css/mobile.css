@@ -58,9 +58,17 @@ body{
     width: 110px;
 }
 .thing .location{
-    display: inline-block;
+    display: block;
     padding-left: 5px;
     font-size: 12px;
+}
+.thing .state{
+    display: inline-block;
+    padding-left: 5px;
+}
+.thing .value{
+    display: inline-block;
+    padding-left: 5px;
 }
 #navigation  div{
     height: 32px;

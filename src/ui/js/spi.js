@@ -72,7 +72,11 @@
         sActionActor = "actors",
         sActionSensor = "sensors",
         fLog,
-        fRenderThings;
+        fRenderThings,
+        oUnits = {
+            "humidity": " %",
+            "temperature": " °C"
+        };
 
     //private methods
     /**
@@ -138,6 +142,7 @@
                 oTemplate = document.querySelector('#actorTemplate').content;
                 oTemplate.querySelector('.name').textContent = oThing.name;
                 oTemplate.querySelector('.type').textContent = oThing.type;
+                oTemplate.querySelector('.state').textContent = oThing.current_state.text;
                 oTemplate.querySelector('.location').textContent = oThing.location;
                 oContent.appendChild(document.importNode(oTemplate, true));
                 break;
@@ -146,6 +151,7 @@
                 oTemplate = document.querySelector('#sensorTemplate').content;
                 oTemplate.querySelector('.name').textContent = oThing.name;
                 oTemplate.querySelector('.measure').textContent = oThing.measure;
+                oTemplate.querySelector('.value').textContent = oThing.current_value.toFixed(2) + oUnits[oThing.measure];
                 oTemplate.querySelector('.location').textContent = oThing.location;
                 oContent.appendChild(document.importNode(oTemplate, true));
                 break;

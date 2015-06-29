@@ -1,6 +1,6 @@
 body {  
     background-color: #FF3333;
-    color: #fff
+    color: #004040;
 }
 a:link {
     color: #004;
@@ -23,7 +23,7 @@ a:hover {
 }
 .menu ul li:hover {
     background-color: #FF9933;
-    color: #fff;
+    color: #004040;
 }
 .content {
     border-color: #FF9900;
@@ -39,7 +39,7 @@ a:hover {
 }
 #content div:hover {
     background-color: #FF9933;
-    color: #fff;
+    color: #004040;
 }
 #navigation {
     background-color: #FF6600;
