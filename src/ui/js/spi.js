@@ -57,11 +57,6 @@
         sCssClassHidden = 'hidden',
         sCssClassAscending = 'ascending',
         sCssClassDescending = 'descending',
-        sCssClassThing = "thing",
-        sCssClassName = "name",
-        sCssClassMeasure = "measure",
-        sCssClassType = "type",
-        sCssClassLocation = "location",
         bSortAscending = true,
         oActiveSortProperty = sPh.sortProperty.NAME,
         sLastAction,
@@ -73,13 +68,10 @@
         sIdSortByType = "sortByType",
         sIdSortByName = "sortByName",
         sIdSortByLocation = "sortByLocation",
-        sHtmlSpan = "span",
         sHtmlDiv = "div",
         sActionActor = "actors",
         sActionSensor = "sensors",
         fLog,
-        fCreateSensor,
-        fCreateActor,
         fRenderThings;
 
     //private methods
@@ -107,73 +99,14 @@
     };
 
     /**
-     * Create a html element for Sensors
-     * @param {Object} oSensor the Sensor to represent
-     * @return {Object} a DOM object
-     */
-    fCreateSensor = function (oSensor) {
-        var oSensorName,
-            oSensorMeasure,
-            oSensorLocation,
-            oSensorDiv = document.createElement(sHtmlDiv);
-
-        oSensorDiv.classList.add(sCssClassThing);
-        oSensorName = document.createElement(sHtmlSpan);
-        oSensorName.classList.add(sCssClassName);
-        oSensorName.innerHTML = oSensor.name;
-        oSensorDiv.appendChild(oSensorName);
-
-        oSensorMeasure = document.createElement(sHtmlSpan);
-        oSensorMeasure.classList.add(sCssClassMeasure);
-        oSensorMeasure.innerHTML = oSensor.measure;
-        oSensorDiv.appendChild(oSensorMeasure);
-
-        oSensorLocation = document.createElement(sHtmlSpan);
-        oSensorLocation.classList.add(sCssClassLocation);
-        oSensorLocation.innerHTML = oSensor.location;
-        oSensorDiv.appendChild(oSensorLocation);
-
-        return oSensorDiv;
-    };
-
-    /**
-     * Create a html element for Actors
-     * @param {Object} oActor the Actor to represent
-     * @return {Object} a DOM object
-     */
-    fCreateActor = function (oActor) {
-        var oActorName,
-            oActorType,
-            oActorLocation,
-            oActorDiv = document.createElement(sHtmlDiv);
-
-        oActorDiv.classList.add(sCssClassThing);
-        oActorName = document.createElement(sHtmlSpan);
-        oActorName.classList.add(sCssClassName);
-        oActorName.innerHTML = oActor.name;
-        oActorDiv.appendChild(oActorName);
-
-        oActorType = document.createElement(sHtmlSpan);
-        oActorType.classList.add(sCssClassType);
-        oActorType.innerHTML = oActor.type;
-        oActorDiv.appendChild(oActorType);
-
-        oActorLocation = document.createElement(sHtmlSpan);
-        oActorLocation.classList.add(sCssClassLocation);
-        oActorLocation.innerHTML = oActor.location;
-        oActorDiv.appendChild(oActorLocation);
-
-        return oActorDiv;
-    };
-
-    /**
      * Render Sensors or Actors
      * @param {String} sAction controls whether to render Sensors or Actors
      */
     fRenderThings = function (sAction) {
         var aThings,
             oContent,
-            oFooter;
+            oFooter,
+            oTemplate;
 
         switch (sAction) {
         case sActionActor:
@@ -191,7 +124,7 @@
             break;
         }
 
-        aThings.sortBy( (bSortAscending ? '' : '-') + oActiveSortProperty.name);
+        aThings.sortBy((bSortAscending ? '' : '-') + oActiveSortProperty.name);
 
         window.sPh.showElements(sIdMenuOrder0, sIdSortByMeasure);
         window.sPh.hideElements(sIdMenu1, sIdSortByType);
@@ -200,8 +133,23 @@
         window.sPh.clearContent();
 
         aThings.forEach(function (oThing) {
-            var oThingElement = fCreateSensor(oThing);
-            oContent.appendChild(oThingElement);
+            switch (sAction) {
+            case sActionActor:
+                oTemplate = document.querySelector('#actorTemplate').content;
+                oTemplate.querySelector('.name').textContent = oThing.name;
+                oTemplate.querySelector('.type').textContent = oThing.type;
+                oTemplate.querySelector('.location').textContent = oThing.location;
+                oContent.appendChild(document.importNode(oTemplate, true));
+                break;
+
+            case sActionSensor:
+                oTemplate = document.querySelector('#sensorTemplate').content;
+                oTemplate.querySelector('.name').textContent = oThing.name;
+                oTemplate.querySelector('.measure').textContent = oThing.measure;
+                oTemplate.querySelector('.location').textContent = oThing.location;
+                oContent.appendChild(document.importNode(oTemplate, true));
+                break;
+            }
         });
 
         oFooter = window.sPh.getElementById(sIdFooter);
@@ -526,7 +474,9 @@
     };
 }(window.sPh = window.sPh || {}));
 
+
 function fSort(evt) {
+    "use strict";
     switch (evt.target.id) {
     case "sortByName":
         window.sPh.setSortProperty(window.sPh.sortProperty.NAME);
@@ -553,9 +503,9 @@ window.sPh.getElementById('sortByName').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByLocation').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByMeasure').addEventListener("click", fSort, false);
 window.sPh.getElementById('sortByType').addEventListener("click", fSort, false);
-window.sPh.getElementById('menu_0').addEventListener("click", function () {window.sPh.toggleVisibility('menu_1'); return false;}, false);
-window.sPh.getElementById('menu_order_0').addEventListener("click", function () {window.sPh.toggleVisibility('menu_order_1'); return false;}, false);
-window.sPh.getElementById('content').addEventListener("click", function () {window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
-window.sPh.getElementById('renderSensor').addEventListener("click", function () {window.sPh.renderSensors(); return false;}, false);
-window.sPh.getElementById('renderActor').addEventListener("click", function () {window.sPh.renderActors(); return false;}, false);
-window.sPh.getElementById('menu_options_0').addEventListener("click", function () {window.sPh.hideElements('menu_1', 'menu_order_1'); window.sPh.renderOptions(); return false;}, false);
+window.sPh.getElementById('menu_0').addEventListener("click", function () {"use strict"; window.sPh.toggleVisibility('menu_1'); return false;}, false);
+window.sPh.getElementById('menu_order_0').addEventListener("click", function () {"use strict"; window.sPh.toggleVisibility('menu_order_1'); return false;}, false);
+window.sPh.getElementById('content').addEventListener("click", function () {"use strict"; window.sPh.hideElements('menu_1', 'menu_order_1'); return false;}, false);
+window.sPh.getElementById('renderSensor').addEventListener("click", function () {"use strict"; window.sPh.renderSensors(); return false;}, false);
+window.sPh.getElementById('renderActor').addEventListener("click", function () {"use strict"; window.sPh.renderActors(); return false;}, false);
+window.sPh.getElementById('menu_options_0').addEventListener("click", function () {"use strict"; window.sPh.hideElements('menu_1', 'menu_order_1'); window.sPh.renderOptions(); return false;}, false);
