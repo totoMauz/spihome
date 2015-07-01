@@ -21,7 +21,7 @@ body{
 .hidden {
     display: none;
 }
-.menu ul  {
+.menu ul {
     padding: 0px;
     list-style-type: none;
 }
@@ -29,48 +29,43 @@ body{
     padding: 7px 4px 3px;
     cursor: pointer;
 }
-.content {
-    top: 40px;
-    min-height: 50px;
-    border: 2px solid;
-}
-.thing {
+spi-actor::shadow .thing, spi-sensor::shadow .thing {
     padding: 7px 4px 3px;
     min-height: 20px;
     border: 1px solid;
     border-radius: 2px;
 }
-.thing .name{
+spi-actor::shadow .name, spi-sensor::shadow .name{
     display: inline-block;
     font-weight: bold;
     width: 60px;
     text-align: center;
     height: 100%;
 }
-.thing .measure{
-    display: inline-block;
-    padding-left: 5px;
-    width: 110px;
-}
-.thing .type{
-    display: inline-block;
-    padding-left: 5px;
-    width: 110px;
-}
-.thing .location{
+spi-actor::shadow .location, spi-sensor::shadow .location{
     display: block;
     padding-left: 5px;
     font-size: 12px;
 }
-.thing .state{
+spi-sensor::shadow .measure{
+    display: inline-block;
+    padding-left: 5px;
+    width: 110px;
+}
+spi-sensor::shadow .value{
     display: inline-block;
     padding-left: 5px;
 }
-.thing .value{
+spi-actor::shadow .type{
+    display: inline-block;
+    padding-left: 5px;
+    width: 110px;
+}
+spi-actor::shadow .state{
     display: inline-block;
     padding-left: 5px;
 }
-#navigation  div{
+#navigation div{
     height: 32px;
     font-weight: bold;
     line-height: 34px;
@@ -117,4 +112,9 @@ body{
 }
 #menu_order_1 ul {
     margin: 0px;
+}
+#content{
+    top: 40px;
+    min-height: 50px;
+    border: 2px solid;
 }

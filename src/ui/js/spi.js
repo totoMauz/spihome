@@ -76,7 +76,11 @@
         oUnits = {
             "humidity": " %",
             "temperature": " °C"
-        };
+        },
+        sensorPrototype,
+        SpiSensor,
+        actorPrototype,
+        SpiActor;
 
     //private methods
     /**
@@ -102,6 +106,36 @@
         }
     };
 
+    sensorPrototype = Object.create(window.HTMLElement.prototype, {
+        createdCallback: {
+            value: function () {
+                var oTemplate = document.querySelector('#sensorTemplate').content;
+                oTemplate.querySelector('.name').textContent = this.getAttribute('name');
+                oTemplate.querySelector('.measure').textContent = this.getAttribute('measure');
+                oTemplate.querySelector('.value').textContent = this.getAttribute('value');
+                oTemplate.querySelector('.location').textContent = this.getAttribute('location');
+                var clone = document.importNode(oTemplate, true);
+                this.createShadowRoot().appendChild(clone);
+            }
+        }
+    });
+    SpiSensor = document.registerElement('spi-sensor', {prototype: sensorPrototype});
+
+    actorPrototype = Object.create(window.HTMLElement.prototype, {
+        createdCallback: {
+            value: function () {
+                var oTemplate = document.querySelector('#actorTemplate').content;
+                oTemplate.querySelector('.name').textContent = this.getAttribute('name');
+                oTemplate.querySelector('.type').textContent = this.getAttribute('type');
+                oTemplate.querySelector('.state').textContent = this.getAttribute('state');
+                oTemplate.querySelector('.location').textContent = this.getAttribute('location');
+                var clone = document.importNode(oTemplate, true);
+                this.createShadowRoot().appendChild(clone);
+            }
+        }
+    });
+    SpiActor = document.registerElement('spi-actor', {prototype: actorPrototype});
+
     /**
      * Render Sensors or Actors
      * @param {String} sAction controls whether to render Sensors or Actors
@@ -110,7 +144,7 @@
         var aThings,
             oContent,
             oFooter,
-            oTemplate;
+            oThingElement;
 
         switch (sAction) {
         case sActionActor:
@@ -139,21 +173,21 @@
         aThings.forEach(function (oThing) {
             switch (sAction) {
             case sActionActor:
-                oTemplate = document.querySelector('#actorTemplate').content;
-                oTemplate.querySelector('.name').textContent = oThing.name;
-                oTemplate.querySelector('.type').textContent = oThing.type;
-                oTemplate.querySelector('.state').textContent = oThing.current_state.text;
-                oTemplate.querySelector('.location').textContent = oThing.location;
-                oContent.appendChild(document.importNode(oTemplate, true));
+                oThingElement =  new SpiActor();
+                oThingElement.setAttribute("name", oThing.name);
+                oThingElement.setAttribute("type", oThing.type);
+                oThingElement.setAttribute("state", oThing.current_state.text);
+                oThingElement.setAttribute("location", oThing.location);
+                oContent.appendChild(document.importNode(oThingElement, true));
                 break;
 
             case sActionSensor:
-                oTemplate = document.querySelector('#sensorTemplate').content;
-                oTemplate.querySelector('.name').textContent = oThing.name;
-                oTemplate.querySelector('.measure').textContent = oThing.measure;
-                oTemplate.querySelector('.value').textContent = oThing.current_value.toFixed(2) + oUnits[oThing.measure];
-                oTemplate.querySelector('.location').textContent = oThing.location;
-                oContent.appendChild(document.importNode(oTemplate, true));
+                oThingElement =  new SpiSensor();
+                oThingElement.setAttribute("name", oThing.name);
+                oThingElement.setAttribute("measure", oThing.measure);
+                oThingElement.setAttribute("value", oThing.current_value.toFixed(2) + oUnits[oThing.measure]);
+                oThingElement.setAttribute("location", oThing.location);
+                oContent.appendChild(document.importNode(oThingElement, true));
                 break;
             }
         });

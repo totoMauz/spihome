@@ -28,16 +28,10 @@ a:hover {
 .content {
     border-color: #FF9900;
 }
-.thing {
+spi-actor::shadow .thing, spi-sensor::shadow .thing {
     border-color: #FF9900;
 }
-#content div:nth-child(odd) {
-    background-color: #FF9900;
-}
-#content div:nth-child(even) {
-    background-color: #FFCC33;
-}
-#content div:hover {
+#content /deep/ div:hover {
     background-color: #FF9933;
     color: #004040;
 }
@@ -45,7 +39,7 @@ a:hover {
     background-color: #FF6600;
     border-color: #f00;
 }
-#navigation  div{
+#navigation div{
     background-color: #FF9900;
     border-color: #f00;
 }

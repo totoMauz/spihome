@@ -1,11 +1,11 @@
-body {  
+body {
     background-color: #141414;
     color: #eee;
 }
 a:link {
     color: #FF9900;
 }
-a:visited  {
+a:visited {
     color: #FF9966;
 }
 a:hover {
@@ -25,19 +25,13 @@ a:hover {
     background-color: #a0a0a0;
     color: #eef;
 }
-.content {
+spi-actor::shadow .thing, spi-sensor::shadow .thing {
     border-color: #000;
 }
-.thing {
+#content {
     border-color: #000;
 }
-#content div:nth-child(odd) {
-    background-color: #606060;
-}
-#content div:nth-child(even) {
-    background-color: #707070;
-}
-#content div:hover {
+#content /deep/ div:hover {
     background-color: #a0a0a0;
     color: #eef;
 }
@@ -45,7 +39,7 @@ a:hover {
     background-color: #505050;
     border-color: #000;
 }
-#navigation  div{
+#navigation div{
     background-color: #606060;
     border-color: #000;
 }
