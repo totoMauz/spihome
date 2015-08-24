@@ -20,11 +20,12 @@ int main()
 		int fd_sens;
 		int fd_ctrl;
 		char buffer[8];
+		unsigned char p = 0;
 		SYSERR(fd_sens = open("/sys/class/gpio/gpio4/value", O_RDONLY|O_CLOEXEC|O_NOCTTY|O_NONBLOCK));
 		SYSERR(fd_ctrl = open("/sys/class/gpio/gpio17/value", O_WRONLY|O_CLOEXEC|O_NOCTTY));
 		SYSERR(pread(fd_sens, buffer, 8, 0));
 
-		TTime ts_last_pulse = -1;
+		TTime ts_start = -1;
 
 		for(;;)
 		{
@@ -32,33 +33,44 @@ int main()
 			SYSERR(poll(&pfd, 1, 1000));
 			if(pfd.revents)
 			{
-				//	pulse detected (motor is still on)
+				//	pulse detected
 				SYSERR(pread(fd_sens, buffer, 8, 0));
 
 				const TTime ts_now = TTime::Now(TIME_CLOCK_MONOTONIC);
-				if(ts_last_pulse != -1)
+				if(ts_start == -1)
 				{
-					fprintf(stderr, "detected motor start!\n");
-					const TTime dt = ts_now - ts_last_pulse;
+					//	first pulse => motor just started
+					fprintf(stderr, "%f: detected motor start!\n", ts_start.ConvertToF(TIME_UNIT_SECONDS));
+					ts_start = ts_now;
+					p = 0;
+				}
+				else
+				{
+					//	motor still running
+
+					if( (++p % 50) == 0 )
+						fputc('.', stderr);
+
+					const TTime dt = ts_now - ts_start;
 					if(dt > 15)
 					{
 						//	forcefully shutdown motor to prevent damage
-						fprintf(stderr, "\nsending stop command ... ");
+						fprintf(stderr, "\n%f: sending stop command ... ", ts_now.ConvertToF(TIME_UNIT_SECONDS));
 						pwrite(fd_ctrl, "1", 1, 0);
-						usleep(100000);
+						usleep(100000L);
 						pwrite(fd_ctrl, "0", 1, 0);
-						ts_last_pulse = -1;
+						usleep(100000L);
+						ts_start = -1;
 						fprintf(stderr, "OK\n");
 					}
 				}
-				ts_last_pulse = ts_now;
-				fputc('.', stderr);
 			}
-			else if(ts_last_pulse != -1)
+			else if(ts_start != -1)
 			{
-				//	timeout (motor off)
-				ts_last_pulse = -1;
-				fprintf(stderr, "detected motor stop!\n");
+				//	timeout; no more activity on GPIO => motor stopped
+				const TTime ts_now = TTime::Now(TIME_CLOCK_MONOTONIC);
+				ts_start = -1;
+				fprintf(stderr, "%f: detected motor stop!\n", ts_now.ConvertToF(TIME_UNIT_SECONDS));
 			}
 		}
 
